@@ -4,6 +4,15 @@
 
 module PointPatterns
 
-greet() = print("Hello World!")
+using GeoStatsBase
+
+using Distributions
+
+# point processes
+include("processes.jl")
+
+export
+  PointProcess,
+  BinomialProcess
 
 end # module
