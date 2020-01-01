@@ -15,8 +15,10 @@ abstract type PointProcess end
 Generate `n` realizations of spatial point process `p`
 inside spatial region `r`.
 """
-Base.rand(p::PointProcess, r::AbstractRegion, n::Int=1) =
+Base.rand(p::PointProcess, r::AbstractRegion, n::Int) =
   [rand_single(p, r) for i in 1:n]
+
+Base.rand(p::PointProcess, r::AbstractRegion) = rand_single(p, r)
 
 #-----------------
 # IMPLEMENTATIONS
