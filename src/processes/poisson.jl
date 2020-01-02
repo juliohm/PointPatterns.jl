@@ -27,3 +27,5 @@ function rand_single(p::PoissonProcess, r::RectangleRegion{T,N}) where {N,T}
   # return point pattern
   PointPattern(rand(U, n))
 end
+
+Base.union(p₁::PoissonProcess, p₂::PoissonProcess) = PoissonProcess(p₁.λ + p₂.λ)
