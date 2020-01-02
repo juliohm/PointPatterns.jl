@@ -21,9 +21,9 @@ struct DiscretizedSampling end
 default_sampling_algorithm(::PoissonProcess{<:Real}) = ProductSampling()
 default_sampling_algorithm(::PoissonProcess{<:Function}) = DiscretizedSampling()
 
-# -----------------
-# homogeneous case
-# -----------------
+#------------------
+# HOMOGENEOUS CASE
+#------------------
 function rand_single(p::PoissonProcess{<:Real}, r::RectangleRegion{T,N},
                      algo::ProductSampling) where {N,T}
   # region configuration
@@ -41,9 +41,9 @@ function rand_single(p::PoissonProcess{<:Real}, r::RectangleRegion{T,N},
   PointPattern(rand(U, n))
 end
 
-# -------------------
-# inhomogeneous case
-# -------------------
+#--------------------
+# INHOMOGENEOUS CASE
+#--------------------
 function rand_single(p::PoissonProcess{<:Function}, r::RectangleRegion{T,N},
                      algo::DiscretizedSampling) where {N,T}
   # discretize region
