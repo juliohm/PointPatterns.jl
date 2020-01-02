@@ -30,5 +30,18 @@ thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Real}) =
 # thinning point pattern
 # -----------------------
 function thin(pp::PointPattern{T,N}, t::RandomThinning{<:Real}) where {N,T}
-  # TODO
+  draws = rand(Bernoulli(t.p), npoints(pp))
+  inds  = findall(isequal(1), draws)
+  PointPattern(coordinates(pp, inds))
+end
+
+function thin(pp::PointPattern{T,N}, t::RandomThinning{<:Function}) where {N,T}
+  inds = Vector{Int}()
+  for j in 1:npoints(pp)
+    x = coordinates(pp, j)
+    if rand(Bernoulli(t.p(x)))
+      push!(inds, j)
+    end
+  end
+  PointPattern(coordinates(pp, inds))
 end
