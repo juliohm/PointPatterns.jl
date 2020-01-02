@@ -10,6 +10,13 @@ A spatial point process.
 abstract type PointProcess end
 
 """
+    ishomogeneous(p)
+
+Tells whether or not the spatial point process `p` is homogeneous.
+"""
+ishomogeneous(p::PointProcess) = false
+
+"""
     rand(p, r, n=1)
 
 Generate `n` realizations of spatial point process `p`

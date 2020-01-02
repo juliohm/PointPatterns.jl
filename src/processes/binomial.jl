@@ -11,6 +11,8 @@ struct BinomialProcess <: PointProcess
   n::Int
 end
 
+ishomogeneous(p::BinomialProcess) = true
+
 function rand_single(p::BinomialProcess, r::RectangleRegion{T,N}) where {N,T}
   # region configuration
   lo = lowerleft(r)

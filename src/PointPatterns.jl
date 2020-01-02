@@ -25,6 +25,7 @@ export
   PointProcess,
   BinomialProcess,
   PoissonProcess,
-  UnionProcess
+  UnionProcess,
+  ishomogeneous
 
 end # module
