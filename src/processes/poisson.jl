@@ -25,5 +25,5 @@ function rand_single(p::PoissonProcess, r::RectangleRegion{T,N}) where {N,T}
   U = product_distribution([Uniform(lo[i], up[i]) for i in 1:N])
 
   # return point pattern
-  PointSet(rand(U, n))
+  PointPattern(rand(U, n))
 end

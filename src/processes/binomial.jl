@@ -20,5 +20,5 @@ function rand_single(p::BinomialProcess, r::RectangleRegion{T,N}) where {N,T}
   U = product_distribution([Uniform(lo[i], up[i]) for i in 1:N])
 
   # return point pattern
-  PointSet(rand(U, p.n))
+  PointPattern(rand(U, p.n))
 end
