@@ -3,22 +3,27 @@
 # ------------------------------------------------------------------
 
 """
-    BinomialProcess(n)
+   PoissonProcess(λ)
 
-A Binomial point process with `n` points.
+A Poisson process with intensity `λ`.
 """
-struct BinomialProcess <: PointProcess
-  n::Int
+struct PoissonProcess{L} <: PointProcess
+  λ::L
 end
 
-function rand_single(p::BinomialProcess, r::RectangleRegion{T,N}) where {N,T}
+function rand_single(p::PoissonProcess, r::RectangleRegion{T,N}) where {N,T}
   # region configuration
   lo = lowerleft(r)
   up = upperright(r)
+
+  # simulate number of points
+  λ = p.λ
+  V = volume(r)
+  n = rand(Poisson(λ*V))
 
   # product of uniform distributions
   U = product_distribution([Uniform(lo[i], up[i]) for i in 1:N])
 
   # return point pattern
-  PointSet(rand(U, p.n))
+  PointSet(rand(U, n))
 end

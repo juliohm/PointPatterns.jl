@@ -24,3 +24,4 @@ Base.rand(p::PointProcess, r::AbstractRegion) = rand_single(p, r)
 # IMPLEMENTATIONS
 #-----------------
 include("processes/binomial.jl")
+include("processes/poisson.jl")

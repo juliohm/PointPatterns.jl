@@ -13,6 +13,7 @@ include("processes.jl")
 
 export
   PointProcess,
-  BinomialProcess
+  BinomialProcess,
+  PoissonProcess
 
 end # module
