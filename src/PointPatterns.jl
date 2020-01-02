@@ -14,6 +14,7 @@ import GeoStatsBase: npoints, coordinates, coordinates!
 
 include("pattern.jl")
 include("processes.jl")
+include("thinning.jl")
 
 # plot recipes
 include("plotrecipes/pattern.jl")
@@ -30,6 +31,11 @@ export
   BinomialProcess,
   PoissonProcess,
   UnionProcess,
-  ishomogeneous
+  ishomogeneous,
+
+  # thinning methods
+  AbstractThinning,
+  RandomThinning,
+  thin
 
 end # module
