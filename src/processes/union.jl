@@ -14,7 +14,11 @@ end
 
 ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 
-function rand_single(p::UnionProcess, r::AbstractRegion)
+struct UnionSampling end
+
+default_sampling_algorithm(::UnionProcess) = UnionSampling()
+
+function rand_single(p::UnionProcess, r::AbstractRegion, algo::UnionSampling)
   pp₁ = rand(p.p₁, r)
   pp₂ = rand(p.p₂, r)
 

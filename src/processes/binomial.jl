@@ -13,7 +13,12 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-function rand_single(p::BinomialProcess, r::RectangleRegion{T,N}) where {N,T}
+struct BinomialSampling end
+
+default_sampling_algorithm(::BinomialProcess) = BinomialSampling()
+
+function rand_single(p::BinomialProcess, r::RectangleRegion{T,N},
+                     algo::BinomialSampling) where {N,T}
   # region configuration
   lo = lowerleft(r)
   up = upperright(r)

@@ -18,13 +18,13 @@ thin(p::PoissonProcess{<:Real}, t::RandomThinning{<:Real}) =
   PoissonProcess(t.p * p.λ)
 
 thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Function}) =
-  PoissonProcess(u -> t.p(u) * p.λ(u))
+  PoissonProcess(x -> t.p(x) * p.λ(x))
 
 thin(p::PoissonProcess{<:Real}, t::RandomThinning{<:Function}) =
-  PoissonProcess(u -> t.p(u) * p.λ)
+  PoissonProcess(x -> t.p(x) * p.λ)
 
 thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Real}) =
-  PoissonProcess(u -> t.p * p.λ(u))
+  PoissonProcess(x -> t.p * p.λ(x))
 
 # -----------------------
 # thinning point pattern

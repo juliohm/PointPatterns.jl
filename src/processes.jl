@@ -17,23 +17,35 @@ Tells whether or not the spatial point process `p` is homogeneous.
 ishomogeneous(p::PointProcess) = false
 
 """
-    rand(p, r, n=1)
+    rand(p, r, n=1; [algo])
 
 Generate `n` realizations of spatial point process `p`
-inside spatial region `r`.
+inside spatial region `r`. Optionally specify sampling
+algorithm `algo`.
 """
-Base.rand(p::PointProcess, r::AbstractRegion, n::Int) =
-  [rand_single(p, r) for i in 1:n]
+Base.rand(p::PointProcess, r::AbstractRegion, n::Int;
+          algo=default_sampling_algorithm(p)) =
+  [rand_single(p, r, algo) for i in 1:n]
 
-Base.rand(p::PointProcess, r::AbstractRegion) = rand_single(p, r)
+Base.rand(p::PointProcess, r::AbstractRegion;
+          algo=default_sampling_algorithm(p)) =
+  rand_single(p, r, algo)
 
 """
-    rand_single(p, r)
+    rand_single(p, r, algo)
 
 Generate a single realization of spatial point process
-`p` inside spatial region `r`.
+`p` inside spatial region `r` with sampling `algo`.
 """
-rand_single(p::PointProcess, r::AbstractRegion) = @error "not implemented"
+rand_single(p::PointProcess, r::AbstractRegion, algo) =
+  @error "not implemented"
+
+"""
+    default_sampling_algorithm(p)
+
+Default sampling algorithm for spatial point process `p`.
+"""
+default_sampling_algorithm(p::PointProcess) = @error "not implemented"
 
 """
     p₁ ∪ p₂
