@@ -7,10 +7,18 @@
 
 Random thining with retention probability `p`.
 """
-struct RandomThinning{T<:Real} <: AbstractThinning
-  p::T
+struct RandomThinning{P<:Union{Real,Function}} <: AbstractThinning
+  p::P
 end
 
-function thin(p::PointProcess, t::RandomThinning)
-  # TODO
-end
+thin(p::PoissonProcess{<:Real}, t::RandomThinning{<:Real}) =
+  PoissonProcess(t.p * p.λ)
+
+thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Function}) =
+  PoissonProcess(u -> t.p(u) * p.λ(u))
+
+thin(p::PoissonProcess{<:Real}, t::RandomThinning{<:Function}) =
+  PoissonProcess(u -> t.p(u) * p.λ)
+
+thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Real}) =
+  PoissonProcess(u -> t.p * p.λ(u))
