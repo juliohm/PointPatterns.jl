@@ -6,11 +6,10 @@ module PointPatterns
 
 using GeoStatsBase
 
-using Distributions: Uniform, Poisson, product_distribution
-using StaticArrays: SVector, MVector
+using Distributions
 using RecipesBase
 
-import GeoStatsBase: npoints, coordinates, coordinates!
+import GeoStatsBase: npoints, coordinates
 
 include("pattern.jl")
 include("processes.jl")
@@ -24,7 +23,6 @@ export
   PointPattern,
   npoints,
   coordinates,
-  coordinates!,
 
   # point processes
   PointProcess,
