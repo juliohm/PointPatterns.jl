@@ -24,6 +24,7 @@ export
   # point processes
   PointProcess,
   BinomialProcess,
-  PoissonProcess
+  PoissonProcess,
+  UnionProcess
 
 end # module

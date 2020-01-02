@@ -20,8 +20,24 @@ Base.rand(p::PointProcess, r::AbstractRegion, n::Int) =
 
 Base.rand(p::PointProcess, r::AbstractRegion) = rand_single(p, r)
 
+"""
+    rand_single(p, r)
+
+Generate a single realization of spatial point process
+`p` inside spatial region `r`.
+"""
+rand_single(p::PointProcess, r::AbstractRegion) = @error "not implemented"
+
+"""
+    p₁ ∪ p₂
+
+Union (or superposition) of spatial point processes `p₁` and `p₂`.
+"""
+Base.union(p₁::PointProcess, p₂::PointProcess) = UnionProcess(p₁, p₂)
+
 #-----------------
 # IMPLEMENTATIONS
 #-----------------
 include("processes/binomial.jl")
 include("processes/poisson.jl")
+include("processes/union.jl")
