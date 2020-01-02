@@ -8,11 +8,15 @@ using GeoStatsBase
 
 using Distributions: Uniform, Poisson, product_distribution
 using StaticArrays: SVector, MVector
+using RecipesBase
 
 import GeoStatsBase: npoints, coordinates, coordinates!
 
 include("pattern.jl")
 include("processes.jl")
+
+# plot recipes
+include("plotrecipes/pattern.jl")
 
 export
   # point pattern
