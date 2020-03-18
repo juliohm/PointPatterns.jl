@@ -9,7 +9,7 @@ GeoStatsBase = "323cb8eb-fbf6-51c0-afd0-f8fba70507b2"
 RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
 
 [compat]
-Distributions = "0.21, 0.22"
+Distributions = "0.21, 0.22, 0.23"
 GeoStatsBase = "0.7"
 RecipesBase = "0.7, 0.8"
 julia = "1"
