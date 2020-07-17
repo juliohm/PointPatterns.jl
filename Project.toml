@@ -1,7 +1,7 @@
 name = "PointPatterns"
 uuid = "e61b41b6-3414-4803-863f-2b69057479eb"
 authors = ["Júlio Hoffimann"]
-version = "0.1.5"
+version = "0.2.0"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
@@ -10,9 +10,9 @@ RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
 
 [compat]
 Distributions = "0.21, 0.22, 0.23"
-GeoStatsBase = "0.10"
+GeoStatsBase = "0.11"
 RecipesBase = "0.7, 0.8, 1.0"
-julia = "1"
+julia = "1.4"
 
 [extras]
 GR = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
