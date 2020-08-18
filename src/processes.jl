@@ -23,11 +23,11 @@ Generate `n` realizations of spatial point process `p`
 inside spatial region `r`. Optionally specify sampling
 algorithm `algo`.
 """
-Base.rand(p::PointProcess, r::AbstractRegion, n::Int;
+Base.rand(p::PointProcess, r::AbstractGeometry, n::Int;
           algo=default_sampling_algorithm(p)) =
   [rand_single(p, r, algo) for i in 1:n]
 
-Base.rand(p::PointProcess, r::AbstractRegion;
+Base.rand(p::PointProcess, r::AbstractGeometry;
           algo=default_sampling_algorithm(p)) =
   rand_single(p, r, algo)
 
@@ -37,7 +37,7 @@ Base.rand(p::PointProcess, r::AbstractRegion;
 Generate a single realization of spatial point process
 `p` inside spatial region `r` with sampling `algo`.
 """
-rand_single(p::PointProcess, r::AbstractRegion, algo) =
+rand_single(p::PointProcess, r::AbstractGeometry, algo) =
   @error "not implemented"
 
 """

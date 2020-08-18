@@ -24,11 +24,11 @@ default_sampling_algorithm(::PoissonProcess{<:Function}) = DiscretizedSampling()
 #------------------
 # HOMOGENEOUS CASE
 #------------------
-function rand_single(p::PoissonProcess{<:Real}, r::RectangleRegion{T,N},
+function rand_single(p::PoissonProcess{<:Real}, r::Rectangle{T,N},
                      algo::ProductSampling) where {N,T}
   # region configuration
-  lo = lowerleft(r)
-  up = upperright(r)
+  lo = origin(r)
+  up = lo + sides(r)
 
   # simulate number of points
   λ = p.λ; V = volume(r)
@@ -44,7 +44,7 @@ end
 #--------------------
 # INHOMOGENEOUS CASE
 #--------------------
-function rand_single(p::PoissonProcess{<:Function}, r::RectangleRegion{T,N},
+function rand_single(p::PoissonProcess{<:Function}, r::Rectangle{T,N},
                      algo::DiscretizedSampling) where {N,T}
   # discretize region
   # TODO
@@ -56,7 +56,7 @@ function rand_single(p::PoissonProcess{<:Function}, r::RectangleRegion{T,N},
   # TODO
 end
 
-function rand_single(p::PoissonProcess{<:Function}, r::RectangleRegion{T,N},
+function rand_single(p::PoissonProcess{<:Function}, r::Rectangle{T,N},
                      algo::ThinnedSampling) where {N,T}
   # Lewis-Shedler algorithm
   # TODO

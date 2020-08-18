@@ -18,7 +18,7 @@ struct UnionSampling end
 
 default_sampling_algorithm(::UnionProcess) = UnionSampling()
 
-function rand_single(p::UnionProcess, r::AbstractRegion, algo::UnionSampling)
+function rand_single(p::UnionProcess, r::AbstractGeometry, algo::UnionSampling)
   pp₁ = rand(p.p₁, r)
   pp₂ = rand(p.p₂, r)
 
