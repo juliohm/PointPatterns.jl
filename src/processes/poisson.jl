@@ -27,8 +27,7 @@ default_sampling_algorithm(::PoissonProcess{<:Function}) = DiscretizedSampling()
 function rand_single(p::PoissonProcess{<:Real}, r::Rectangle{T,N},
                      algo::ProductSampling) where {N,T}
   # region configuration
-  lo = origin(r)
-  up = lo + sides(r)
+  lo, up = extrema(r)
 
   # simulate number of points
   λ = p.λ; V = volume(r)

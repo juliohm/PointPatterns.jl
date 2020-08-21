@@ -20,8 +20,7 @@ default_sampling_algorithm(::BinomialProcess) = BinomialSampling()
 function rand_single(p::BinomialProcess, r::Rectangle{T,N},
                      algo::BinomialSampling) where {N,T}
   # region configuration
-  lo = origin(r)
-  up = lo + sides(r)
+  lo, up = extrema(r)
 
   # product of uniform distributions
   U = product_distribution([Uniform(lo[i], up[i]) for i in 1:N])
