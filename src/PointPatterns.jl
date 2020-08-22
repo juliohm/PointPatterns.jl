@@ -9,7 +9,7 @@ using GeoStatsBase
 using Distributions
 using RecipesBase
 
-import GeoStatsBase: npoints, coordinates
+import GeoStatsBase: coordinates
 
 include("pattern.jl")
 include("processes.jl")
