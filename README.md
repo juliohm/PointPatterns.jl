@@ -1,6 +1,6 @@
 # PointPatterns.jl
 
-[![][travis-img]][travis-url] [![][codecov-img]][codecov-url]
+[![][build-img]][build-url] [![][codecov-img]][codecov-url]
 
 Many tools have been developed in spatial statistics to
 extract useful information from (marked) point clouds.
@@ -26,8 +26,8 @@ For examples of usage, please check the main documentation.
 
 If you have any questions, please contact our community on the [gitter channel](https://gitter.im/JuliaEarth/GeoStats.jl).
 
-[travis-img]: https://travis-ci.org/JuliaEarth/PointPatterns.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/JuliaEarth/PointPatterns.jl
+[build-img]: https://img.shields.io/github/workflow/status/JuliaEarth/PointPatterns.jl/CI?style=flat-square
+[build-url]: https://github.com/JuliaEarth/PointPatterns.jl/actions
 
 [codecov-img]: https://codecov.io/gh/JuliaEarth/PointPatterns.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/JuliaEarth/PointPatterns.jl
