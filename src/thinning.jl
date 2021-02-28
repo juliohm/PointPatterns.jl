@@ -21,7 +21,7 @@ thin(p::PointProcess, t::AbstractThinning) = @error "not implemented"
 
 Thin spatial point pattern `pp` with thinning method `t`.
 """
-thin(pp::PointPattern, t::AbstractThinning) = @error "not implemented"
+thin(pp::PointSet, t::AbstractThinning) = @error "not implemented"
 
 #-----------------
 # IMPLEMENTATIONS

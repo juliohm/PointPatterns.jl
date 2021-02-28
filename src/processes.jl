@@ -17,27 +17,27 @@ Tells whether or not the spatial point process `p` is homogeneous.
 ishomogeneous(p::PointProcess) = false
 
 """
-    rand(p, r, n=1; [algo])
+    rand(p, g, n=1; [algo])
 
 Generate `n` realizations of spatial point process `p`
-inside spatial region `r`. Optionally specify sampling
+inside geometry `g`. Optionally specify sampling
 algorithm `algo`.
 """
-Base.rand(p::PointProcess, r::AbstractGeometry, n::Int;
+Base.rand(p::PointProcess, g::Geometry, n::Int;
           algo=default_sampling_algorithm(p)) =
-  [rand_single(p, r, algo) for i in 1:n]
+  [rand_single(p, g, algo) for i in 1:n]
 
-Base.rand(p::PointProcess, r::AbstractGeometry;
+Base.rand(p::PointProcess, g::Geometry;
           algo=default_sampling_algorithm(p)) =
-  rand_single(p, r, algo)
+  rand_single(p, g, algo)
 
 """
-    rand_single(p, r, algo)
+    rand_single(p, g, algo)
 
 Generate a single realization of spatial point process
-`p` inside spatial region `r` with sampling `algo`.
+`p` inside geometry `g` with sampling `algo`.
 """
-rand_single(p::PointProcess, r::AbstractGeometry, algo) =
+rand_single(::PointProcess, ::Geometry, algo) =
   @error "not implemented"
 
 """
@@ -45,7 +45,7 @@ rand_single(p::PointProcess, r::AbstractGeometry, algo) =
 
 Default sampling algorithm for spatial point process `p`.
 """
-default_sampling_algorithm(p::PointProcess) = @error "not implemented"
+default_sampling_algorithm(::PointProcess) = @error "not implemented"
 
 """
     p₁ ∪ p₂
