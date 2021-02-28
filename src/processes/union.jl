@@ -18,12 +18,12 @@ struct UnionSampling end
 
 default_sampling_algorithm(::UnionProcess) = UnionSampling()
 
-function rand_single(p::UnionProcess, r::AbstractGeometry, algo::UnionSampling)
+function rand_single(p::UnionProcess, ::Geometry, algo::UnionSampling)
   pp₁ = rand(p.p₁, r)
   pp₂ = rand(p.p₂, r)
 
   X = coordinates(pp₁)
   Y = coordinates(pp₂)
 
-  PointPattern(hcat(X, Y))
+  PointSet(hcat(X, Y))
 end
