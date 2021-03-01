@@ -16,4 +16,17 @@
   @testset "Poisson" begin
     # TODO
   end
+
+  @testset "Union" begin
+    b  = Box((0.,0.), (100.,100.))
+    p₁ = BinomialProcess(50)
+    p₂ = BinomialProcess(50)
+    p  = p₁ ∪ p₂ # 100 points
+
+    s = rand(p, b, 2)
+    @test length(s) == 2
+    @test s[1] isa PointSet
+    @test s[2] isa PointSet
+    @test nelements.(s) == [100,100]
+  end
 end

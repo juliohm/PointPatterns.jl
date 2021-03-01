@@ -18,12 +18,12 @@ struct UnionSampling end
 
 default_sampling_algorithm(::UnionProcess) = UnionSampling()
 
-function rand_single(p::UnionProcess, ::Geometry, algo::UnionSampling)
-  pp₁ = rand(p.p₁, r)
-  pp₂ = rand(p.p₂, r)
+function rand_single(p::UnionProcess, g::Geometry, algo::UnionSampling)
+  pp₁ = rand(p.p₁, g)
+  pp₂ = rand(p.p₂, g)
 
-  X = coordinates(pp₁)
-  Y = coordinates(pp₂)
+  X = coordinates(pp₁, 1:nelements(pp₁))
+  Y = coordinates(pp₂, 1:nelements(pp₂))
 
   PointSet(hcat(X, Y))
 end
