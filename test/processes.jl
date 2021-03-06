@@ -2,10 +2,10 @@
   @testset "Basic" begin
     for p in [BinomialProcess(100), PoissonProcess(100.)]
       r = Box((0.,1.), (1.,2.))
-      P = rand(p, r)
-      X = coordinates(P, 1:nelements(P))
-      @test all(0 .≤ X[1,:] .≤ 1)
-      @test all(1 .≤ X[2,:] .≤ 2)
+      pp = rand(p, r)
+      xs = [coordinates(pp[i]) for i in 1:nelements(pp)]
+      @test all(0 .≤ first.(xs) .≤ 1)
+      @test all(1 .≤ last.(xs) .≤ 2)
     end
   end
 

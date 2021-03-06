@@ -22,8 +22,8 @@ function rand_single(p::UnionProcess, g::Geometry, algo::UnionSampling)
   pp₁ = rand(p.p₁, g)
   pp₂ = rand(p.p₂, g)
 
-  X = coordinates(pp₁, 1:nelements(pp₁))
-  Y = coordinates(pp₂, 1:nelements(pp₂))
+  X = [coordinates(pp₁[i]) for i in 1:nelements(pp₁)]
+  Y = [coordinates(pp₂[i]) for i in 1:nelements(pp₂)]
 
-  PointSet(hcat(X, Y))
+  PointSet([X; Y])
 end
