@@ -11,5 +11,5 @@ Meshes = "eacbb407-ea5a-433e-ab97-5258b1ca43fa"
 [compat]
 Distributions = "0.21, 0.22, 0.23, 0.24, 0.25"
 GeoStatsBase = "0.21"
-Meshes = "0.15"
+Meshes = "0.15, 0.16"
 julia = "1.5"
