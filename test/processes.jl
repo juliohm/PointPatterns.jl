@@ -14,7 +14,18 @@
   end
 
   @testset "Poisson" begin
-    # TODO
+    p = PoissonProcess(100.)
+    t = Triangle((0.,0.), (1.,0.), (1.,1.))
+    pp = rand(p, t)
+    xs = coordinates.(pp)
+    @test all(0 .≤ first.(xs) .≤ 1)
+    @test all(0 .≤ last.(xs))
+
+    q = Quadrangle((0.,0.), (1.,0.), (1.,1.), (0.,1.))
+    pp = rand(p, q)
+    xs = coordinates.(pp)
+    @test all(0 .≤ first.(xs) .≤ 1)
+    @test all(0 .≤ last.(xs) .≤ 1)
   end
 
   @testset "Union" begin

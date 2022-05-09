@@ -25,49 +25,51 @@ algorithm `algo` and random number generator `rng`.
 """
 Base.rand(rng::Random.AbstractRNG,
           p::PointProcess, g::Geometry, n::Int;
-          algo=default_sampling_algorithm(p)) =
+          algo=default_sampling_algorithm(p, g)) =
   [rand_single(rng, p, g, algo) for i in 1:n]
 
 Base.rand(rng::Random.AbstractRNG,
           p::PointProcess, g::Geometry;
-          algo=default_sampling_algorithm(p)) =
+          algo=default_sampling_algorithm(p, g)) =
   rand_single(rng, p, g, algo)
 
 Base.rand(p::PointProcess, g::Geometry, n::Int;
-          algo=default_sampling_algorithm(p)) = 
+          algo=default_sampling_algorithm(p, g)) = 
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
 Base.rand(p::PointProcess, g::Geometry;
-          algo=default_sampling_algorithm(p)) = 
+          algo=default_sampling_algorithm(p, g)) = 
   rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
-    rand_single(p, g, algo)
+    rand_single(rng, p, g, algo)
 
 Generate a single realization of spatial point process
 `p` inside geometry `g` with sampling `algo`.
 """
-rand_single(::Random.AbstractRNG, ::PointProcess, ::Geometry, algo) =
-  throw(ErrorException("not implemented"))
+function rand_single end
 
 """
-    default_sampling_algorithm(p)
+    default_sampling_algorithm(p, g)
 
-Default sampling algorithm for spatial point process `p`.
+Default sampling algorithm for spatial point process `p`
+on geometry `g`.
 """
-default_sampling_algorithm(::PointProcess) =
-  throw(ErrorException("not implemented"))
+function default_sampling_algorithm end
 
-"""
-    p₁ ∪ p₂
+# --------------------
+# SAMPLING ALGORITHMS
+# --------------------
 
-Union (or superposition) of spatial point processes `p₁` and `p₂`.
-"""
-Base.union(p₁::PointProcess, p₂::PointProcess) = UnionProcess(p₁, p₂)
+struct ProductSampling end
+struct ThinnedSampling end
+struct DiscretizedSampling end
+struct UnionSampling end
 
 #-----------------
 # IMPLEMENTATIONS
 #-----------------
+
 include("processes/binomial.jl")
 include("processes/poisson.jl")
 include("processes/union.jl")

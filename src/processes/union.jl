@@ -12,11 +12,11 @@ struct UnionProcess{P₁<:PointProcess,P₂<:PointProcess} <: PointProcess
   p₂::P₂
 end
 
+Base.union(p₁::PointProcess, p₂::PointProcess) = UnionProcess(p₁, p₂)
+
 ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 
-struct UnionSampling end
-
-default_sampling_algorithm(::UnionProcess) = UnionSampling()
+default_sampling_algorithm(::UnionProcess, ::Geometry) = UnionSampling()
 
 function rand_single(rng::Random.AbstractRNG,
                      p::UnionProcess, g::Geometry,

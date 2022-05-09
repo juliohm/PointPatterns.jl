@@ -13,13 +13,11 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-struct BinomialSampling end
-
-default_sampling_algorithm(::BinomialProcess) = BinomialSampling()
+default_sampling_algorithm(::BinomialProcess, ::Geometry) = ProductSampling()
 
 function rand_single(rng::Random.AbstractRNG,
                      p::BinomialProcess, b::Box{Dim,T},
-                     ::BinomialSampling) where {Dim,T}
+                     ::ProductSampling) where {Dim,T}
   # region configuration
   lo, up = coordinates.(extrema(b))
 
