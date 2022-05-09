@@ -9,6 +9,8 @@ using GeoStatsBase
 
 using Distributions
 
+import Random
+
 include("processes.jl")
 include("thinning.jl")
 

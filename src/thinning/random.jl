@@ -12,8 +12,9 @@ struct RandomThinning{P<:Union{Real,Function}} <: AbstractThinning
 end
 
 # -----------------------
-# thinning point process
+# THINNING POINT PROCESS
 # -----------------------
+
 thin(p::PoissonProcess{<:Real}, t::RandomThinning{<:Real}) =
   PoissonProcess(t.p * p.λ)
 
@@ -27,8 +28,9 @@ thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Real}) =
   PoissonProcess(x -> t.p * p.λ(x))
 
 # -----------------------
-# thinning point pattern
+# THINNING POINT PATTERN
 # -----------------------
+
 function thin(pp::PointSet, t::RandomThinning{<:Real})
   draws = rand(Bernoulli(t.p), nelements(pp))
   inds  = findall(isequal(1), draws)

@@ -17,19 +17,29 @@ Tells whether or not the spatial point process `p` is homogeneous.
 ishomogeneous(p::PointProcess) = false
 
 """
-    rand(p, g, n=1; [algo])
+    rand([rng], p, g, n=1; [algo])
 
 Generate `n` realizations of spatial point process `p`
 inside geometry `g`. Optionally specify sampling
-algorithm `algo`.
+algorithm `algo` and random number generator `rng`.
 """
-Base.rand(p::PointProcess, g::Geometry, n::Int;
+Base.rand(rng::Random.AbstractRNG,
+          p::PointProcess, g::Geometry, n::Int;
           algo=default_sampling_algorithm(p)) =
-  [rand_single(p, g, algo) for i in 1:n]
+  [rand_single(rng, p, g, algo) for i in 1:n]
+
+Base.rand(rng::Random.AbstractRNG,
+          p::PointProcess, g::Geometry;
+          algo=default_sampling_algorithm(p)) =
+  rand_single(rng, p, g, algo)
+
+Base.rand(p::PointProcess, g::Geometry, n::Int;
+          algo=default_sampling_algorithm(p)) = 
+  rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
 Base.rand(p::PointProcess, g::Geometry;
-          algo=default_sampling_algorithm(p)) =
-  rand_single(p, g, algo)
+          algo=default_sampling_algorithm(p)) = 
+  rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
     rand_single(p, g, algo)
@@ -37,15 +47,16 @@ Base.rand(p::PointProcess, g::Geometry;
 Generate a single realization of spatial point process
 `p` inside geometry `g` with sampling `algo`.
 """
-rand_single(::PointProcess, ::Geometry, algo) =
-  @error "not implemented"
+rand_single(::Random.AbstractRNG, ::PointProcess, ::Geometry, algo) =
+  throw(ErrorException("not implemented"))
 
 """
     default_sampling_algorithm(p)
 
 Default sampling algorithm for spatial point process `p`.
 """
-default_sampling_algorithm(::PointProcess) = @error "not implemented"
+default_sampling_algorithm(::PointProcess) =
+  throw(ErrorException("not implemented"))
 
 """
     p₁ ∪ p₂

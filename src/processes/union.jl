@@ -18,12 +18,11 @@ struct UnionSampling end
 
 default_sampling_algorithm(::UnionProcess) = UnionSampling()
 
-function rand_single(p::UnionProcess, g::Geometry, algo::UnionSampling)
-  pp₁ = rand(p.p₁, g)
-  pp₂ = rand(p.p₂, g)
+function rand_single(rng::Random.AbstractRNG,
+                     p::UnionProcess, g::Geometry,
+                     ::UnionSampling)
+  pp₁ = rand(rng, p.p₁, g)
+  pp₂ = rand(rng, p.p₂, g)
 
-  X = [coordinates(pp₁[i]) for i in 1:nelements(pp₁)]
-  Y = [coordinates(pp₂[i]) for i in 1:nelements(pp₂)]
-
-  PointSet([X; Y])
+  PointSet([coordinates.(pp₁); coordinates.(pp₂)])
 end

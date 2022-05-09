@@ -7,6 +7,7 @@ version = "0.3.15"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 GeoStatsBase = "323cb8eb-fbf6-51c0-afd0-f8fba70507b2"
 Meshes = "eacbb407-ea5a-433e-ab97-5258b1ca43fa"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 Distributions = "0.21, 0.22, 0.23, 0.24, 0.25"

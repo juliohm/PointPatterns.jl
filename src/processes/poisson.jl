@@ -24,26 +24,30 @@ default_sampling_algorithm(::PoissonProcess{<:Function}) = DiscretizedSampling()
 #------------------
 # HOMOGENEOUS CASE
 #------------------
-function rand_single(p::PoissonProcess{<:Real}, b::Box{Dim,T},
+
+function rand_single(rng::Random.AbstractRNG,
+                     p::PoissonProcess{<:Real}, b::Box{Dim,T},
                      ::ProductSampling) where {Dim,T}
   # region configuration
   lo, up = coordinates.(extrema(b))
 
   # simulate number of points
   λ = p.λ; V = measure(b)
-  n = rand(Poisson(λ*V))
+  n = rand(rng, Poisson(λ*V))
 
   # product of uniform distributions
   U = product_distribution([Uniform(lo[i], up[i]) for i in 1:Dim])
 
   # return point pattern
-  PointSet(rand(U, n))
+  PointSet(rand(rng, U, n))
 end
 
 #--------------------
 # INHOMOGENEOUS CASE
 #--------------------
-function rand_single(p::PoissonProcess{<:Function}, g::Box{Dim,T},
+
+function rand_single(rng::Random.AbstractRNG,
+                     p::PoissonProcess{<:Function}, g::Box{Dim,T},
                      algo::DiscretizedSampling) where {Dim,T}
   # discretize region
   # TODO
@@ -55,7 +59,8 @@ function rand_single(p::PoissonProcess{<:Function}, g::Box{Dim,T},
   # TODO
 end
 
-function rand_single(p::PoissonProcess{<:Function}, b::Box{Dim,T},
+function rand_single(rng::Random.AbstractRNG,
+                     p::PoissonProcess{<:Function}, b::Box{Dim,T},
                      algo::ThinnedSampling) where {Dim,T}
   # Lewis-Shedler algorithm
   # TODO

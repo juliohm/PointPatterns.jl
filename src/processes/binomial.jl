@@ -17,7 +17,8 @@ struct BinomialSampling end
 
 default_sampling_algorithm(::BinomialProcess) = BinomialSampling()
 
-function rand_single(p::BinomialProcess, b::Box{Dim,T},
+function rand_single(rng::Random.AbstractRNG,
+                     p::BinomialProcess, b::Box{Dim,T},
                      ::BinomialSampling) where {Dim,T}
   # region configuration
   lo, up = coordinates.(extrema(b))
@@ -26,5 +27,5 @@ function rand_single(p::BinomialProcess, b::Box{Dim,T},
   U = product_distribution([Uniform(lo[i], up[i]) for i in 1:Dim])
 
   # return point pattern
-  PointSet(rand(U, p.n))
+  PointSet(rand(rng, U, p.n))
 end
