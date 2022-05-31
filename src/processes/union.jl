@@ -12,6 +12,11 @@ struct UnionProcess{P₁<:PointProcess,P₂<:PointProcess} <: PointProcess
   p₂::P₂
 end
 
+"""
+    p₁ ∪ p₂
+
+Return the union of point processes `p₁` and `p₂`.
+"""
 Base.union(p₁::PointProcess, p₂::PointProcess) = UnionProcess(p₁, p₂)
 
 ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
