@@ -1,7 +1,7 @@
 name = "PointPatterns"
 uuid = "e61b41b6-3414-4803-863f-2b69057479eb"
 authors = ["Júlio Hoffimann"]
-version = "0.4.3"
+version = "0.4.4"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
@@ -11,6 +11,6 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 Distributions = "0.25"
-GeoStatsBase = "0.26"
-Meshes = "0.22, 0.23"
+GeoStatsBase = "0.26, 0.27"
+Meshes = "0.22, 0.23, 0.24"
 julia = "1.6"
