@@ -15,9 +15,7 @@ ishomogeneous(p::BinomialProcess) = true
 
 default_sampling_algorithm(::BinomialProcess, ::Geometry) = ProductSampling()
 
-function rand_single(rng::Random.AbstractRNG,
-                     p::BinomialProcess, b::Box{Dim,T},
-                     ::ProductSampling) where {Dim,T}
+function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, b::Box{Dim,T}, ::ProductSampling) where {Dim,T}
   # region configuration
   lo, up = coordinates.(extrema(b))
 
