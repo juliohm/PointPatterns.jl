@@ -23,9 +23,7 @@ ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 
 default_sampling_algorithm(::UnionProcess, ::Geometry) = UnionSampling()
 
-function rand_single(rng::Random.AbstractRNG,
-                     p::UnionProcess, g::Geometry,
-                     ::UnionSampling)
+function rand_single(rng::Random.AbstractRNG, p::UnionProcess, g::Geometry, ::UnionSampling)
   pp₁ = rand(rng, p.p₁, g)
   pp₂ = rand(rng, p.p₂, g)
 
