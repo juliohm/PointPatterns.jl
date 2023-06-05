@@ -30,16 +30,16 @@ thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Real}) = PoissonProcess(
 function thin(pp::PointSet, t::RandomThinning{<:Real})
   draws = rand(Bernoulli(t.p), nelements(pp))
   inds = findall(isequal(1), draws)
-  PointSet(coordinates(pp, inds))
+  view(pp, inds)
 end
 
 function thin(pp::PointSet, t::RandomThinning{<:Function})
   inds = Vector{Int}()
   for j in 1:nelements(pp)
-    x = coordinates(pp, j)
+    x = element(pp, j)
     if rand(Bernoulli(t.p(x)))
       push!(inds, j)
     end
   end
-  PointSet(coordinates(pp, inds))
+  PointSet(pp.items[inds])
 end
