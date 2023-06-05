@@ -23,7 +23,6 @@ ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
 
 default_sampling_algorithm(::PoissonProcess, ::Geometry) = DiscretizedSampling()
-default_sampling_algorithm(::PoissonProcess{<:Real}, ::Box) = ProductSampling()
 
 #------------------
 # HOMOGENEOUS CASE
