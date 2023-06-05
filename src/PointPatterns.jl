@@ -25,6 +25,9 @@ export
   # thinning methods
   AbstractThinning,
   RandomThinning,
-  thin
+  thin,
+
+  # sampling methods
+  ThinnedSampling
 
 end # module
