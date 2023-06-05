@@ -56,9 +56,18 @@ function default_sampling_algorithm end
 # --------------------
 
 struct ProductSampling end
-struct ThinnedSampling end
 struct DiscretizedSampling end
 struct UnionSampling end
+
+"""
+    ThinnedSampling(λmax)
+
+Generate sample using Lewis-Shedler algorithm (1979) with
+maximum value of the intensity function `λmax`.
+"""
+struct ThinnedSampling
+  λmax::Real
+end
 
 #-----------------
 # IMPLEMENTATIONS

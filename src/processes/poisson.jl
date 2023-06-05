@@ -42,22 +42,6 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g::Geom
   PointSet(collect(pts))
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, b::Box, ::ProductSampling)
-  # region configuration
-  lo, up = coordinates.(extrema(b))
-
-  # simulate number of points
-  λ = p.λ
-  V = measure(b)
-  n = rand(rng, Poisson(λ * V))
-
-  # product of uniform distributions
-  U = product_distribution([Uniform(lo[i], up[i]) for i in 1:embeddim(b)])
-
-  # return point pattern
-  PointSet(rand(rng, U, n))
-end
-
 #--------------------
 # INHOMOGENEOUS CASE
 #--------------------
@@ -73,7 +57,10 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::
   # TODO
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::Box, algo::ThinnedSampling)
-  # Lewis-Shedler algorithm
-  # TODO
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::Geometry, algo::ThinnedSampling)
+  # simulate a homogeneous process
+  pp = rand_single(rng, PoissonProcess(algo.λmax), g, DiscretizedSampling())
+
+  # thin point pattern
+  thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
