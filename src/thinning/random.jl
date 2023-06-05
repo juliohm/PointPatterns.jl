@@ -30,7 +30,7 @@ thin(p::PoissonProcess{<:Function}, t::RandomThinning{<:Real}) = PoissonProcess(
 function thin(pp::PointSet, t::RandomThinning{<:Real})
   draws = rand(Bernoulli(t.p), nelements(pp))
   inds = findall(isequal(1), draws)
-  PointSet(pp.items[inds])
+  view(pp, inds)
 end
 
 function thin(pp::PointSet, t::RandomThinning{<:Function})
