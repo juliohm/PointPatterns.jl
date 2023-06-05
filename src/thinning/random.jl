@@ -41,6 +41,5 @@ function thin(pp::PointSet, t::RandomThinning{<:Function})
       push!(inds, j)
     end
   end
-    inds
   PointSet(pp.items[inds])
 end
