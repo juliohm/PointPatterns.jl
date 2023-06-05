@@ -4,7 +4,10 @@ using GeoStatsBase
 using Test, Random
 
 # list of tests
-testfiles = ["processes.jl"]
+testfiles = [
+  "processes.jl",
+  "thinning.jl"
+]
 
 @testset "PointPatterns.jl" begin
   for testfile in testfiles
