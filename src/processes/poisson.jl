@@ -59,7 +59,7 @@ end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::Geometry, algo::ThinnedSampling)
   # simulate a homogeneous process
-  pp = rand_single(rng, PoissonProcess(algo.λmax), g, DiscretizedSampling())
+  pp = rand(rng, PoissonProcess(algo.λmax), g)
 
   # thin point pattern
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
