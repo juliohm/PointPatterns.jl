@@ -13,7 +13,7 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-default_sampling_algorithm(::BinomialProcess, ::GeometryOrMesh) = DiscretizedSampling()
+default_sampling_algorithm(::BinomialProcess, ::Any) = DiscretizedSampling()
 
 function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, g::GeometryOrMesh, ::DiscretizedSampling)
   pts = sample(g, HomogeneousSampling(p.n))

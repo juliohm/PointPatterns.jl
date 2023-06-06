@@ -11,8 +11,6 @@ using Distributions
 
 import Random
 
-const GeometryOrMesh = Union{Geometry,Mesh}
-
 include("processes.jl")
 include("thinning.jl")
 

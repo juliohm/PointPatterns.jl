@@ -36,7 +36,7 @@ default_sampling_algorithm(::PoissonProcess, ::GeometryOrMesh) = DiscretizedSamp
 # HOMOGENEOUS CASE
 #------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g::GeometryOrMesh, ::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::DiscretizedSampling)
   # simulate number of points
   λ = p.λ
   V = measure(g)
@@ -80,7 +80,7 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::
   rand_single(rng, PoissonProcess(λvec), g, DiscretizedSampling())
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::GeometryOrMesh, algo::ThinnedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
   # simulate a homogeneous process
   pp = rand(rng, PoissonProcess(algo.λmax), g)
 
