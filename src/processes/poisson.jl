@@ -24,8 +24,11 @@ Base.union(p₁::PoissonProcess{<:Real}, p₂::PoissonProcess{<:Function}) = Poi
 
 Base.union(p₁::PoissonProcess{<:Function}, p₂::PoissonProcess{<:Real}) = PoissonProcess(x -> p₁.λ(x) + p₂.λ)
 
+Base.union(p₁::PoissonProcess{<:Vector}, p₂::PoissonProcess{<:Vector}) = PoissonProcess(x -> p₁.λ + p₂.λ)
+
 ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
+ishomogeneous(p::PoissonProcess{<:Vector}) = false
 
 default_sampling_algorithm(::PoissonProcess, ::GeometryOrMesh) = DiscretizedSampling()
 
