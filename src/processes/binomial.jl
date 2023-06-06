@@ -13,15 +13,9 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-default_sampling_algorithm(::BinomialProcess, ::Geometry) = ProductSampling()
+default_sampling_algorithm(::BinomialProcess, ::GeometryOrMesh) = DiscretizedSampling()
 
-function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, b::Box{Dim,T}, ::ProductSampling) where {Dim,T}
-  # region configuration
-  lo, up = coordinates.(extrema(b))
-
-  # product of uniform distributions
-  U = product_distribution([Uniform(lo[i], up[i]) for i in 1:Dim])
-
-  # return point pattern
-  PointSet(rand(rng, U, p.n))
+function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, g::GeometryOrMesh, ::DiscretizedSampling)
+  pts = sample(g, HomogeneousSampling(p.n))
+  PointSet(collect(pts))
 end
