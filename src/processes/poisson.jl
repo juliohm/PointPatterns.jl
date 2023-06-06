@@ -43,11 +43,15 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::Di
   V = measure(g)
   n = rand(rng, Poisson(λ * V))
 
-  # simulate homogeneous process
-  pts = sample(g, HomogeneousSampling(n))
+  if n == 0
+    nothing
+  else
+    # simulate homogeneous process
+    pts = sample(g, HomogeneousSampling(n))
 
-  # return point pattern
-  PointSet(collect(pts))
+    # return point pattern
+    PointSet(collect(pts))
+  end
 end
 
 #--------------------
