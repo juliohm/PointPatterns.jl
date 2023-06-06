@@ -22,13 +22,13 @@ Base.union(p₁::PoissonProcess{<:Function}, p₂::PoissonProcess{<:Real}) = Poi
 ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
 
-default_sampling_algorithm(::PoissonProcess, ::Geometry) = DiscretizedSampling()
+default_sampling_algorithm(::PoissonProcess, ::GeometryOrMesh) = DiscretizedSampling()
 
 #------------------
 # HOMOGENEOUS CASE
 #------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g::Geometry, ::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g::GeometryOrMesh, ::DiscretizedSampling)
   # simulate number of points
   λ = p.λ
   V = measure(g)
@@ -45,21 +45,21 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::Box, algo::DiscretizedSampling)
-  # discretize region
-  # TODO
-
-  # discretize retention
-  # TODO
-
-  # sample each element
-  # TODO
-end
-
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::Geometry, algo::ThinnedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::GeometryOrMesh, algo::ThinnedSampling)
   # simulate a homogeneous process
   pp = rand(rng, PoissonProcess(algo.λmax), g)
 
   # thin point pattern
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
+
+# function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::Box, algo::DiscretizedSampling)
+#   # discretize region
+#   # TODO
+#
+#   # discretize retention
+#   # TODO
+#
+#   # sample each element
+#   # TODO
+# end

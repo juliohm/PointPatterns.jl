@@ -23,16 +23,16 @@ Generate `n` realizations of spatial point process `p`
 inside geometry `g`. Optionally specify sampling
 algorithm `algo` and random number generator `rng`.
 """
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g::Geometry, n::Int; algo=default_sampling_algorithm(p, g)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g::GeometryOrMesh, n::Int; algo=default_sampling_algorithm(p, g)) =
   [rand_single(rng, p, g, algo) for i in 1:n]
 
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g::Geometry; algo=default_sampling_algorithm(p, g)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g::GeometryOrMesh; algo=default_sampling_algorithm(p, g)) =
   rand_single(rng, p, g, algo)
 
-Base.rand(p::PointProcess, g::Geometry, n::Int; algo=default_sampling_algorithm(p, g)) =
+Base.rand(p::PointProcess, g::GeometryOrMesh, n::Int; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
-Base.rand(p::PointProcess, g::Geometry; algo=default_sampling_algorithm(p, g)) =
+Base.rand(p::PointProcess, g::GeometryOrMesh; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
