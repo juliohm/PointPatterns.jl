@@ -44,6 +44,7 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::Di
   n = rand(rng, Poisson(λ * V))
 
   if n == 0
+    # PointSet{embeddim(g), coordtype(g)}([])
     nothing
   else
     # simulate homogeneous process
@@ -75,15 +76,16 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, m::Me
   PointSet(collect(pts))
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::Geometry, algo::DiscretizedSampling)
-  # discretize region
-  g = discretize(g)
-  m = centroid.(g)
-  λvec = p.λ.(m)
-
-  # sample point pattern
-  rand_single(rng, PoissonProcess(λvec), g, DiscretizedSampling())
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, m::Mesh, algo::DiscretizedSampling)
+  c = centroid.(m)
+  λvec = p.λ.(c)
+  rand_single(rng, PoissonProcess(λvec), m, algo)
 end
+
+# function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::Geometry, algo::DiscretizedSampling)
+#   g = discretize(g)
+#   rand_single(rng, p, g, algo)
+# end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
   # simulate a homogeneous process
