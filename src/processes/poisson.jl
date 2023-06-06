@@ -30,7 +30,8 @@ ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
 ishomogeneous(p::PoissonProcess{<:Vector}) = false
 
-default_sampling_algorithm(::PoissonProcess, ::GeometryOrMesh) = DiscretizedSampling()
+default_sampling_algorithm(::PoissonProcess, ::Any) = DiscretizedSampling()
+default_sampling_algorithm(::PoissonProcess{<:Function}, ::Any) = ThinnedSampling()
 
 #------------------
 # HOMOGENEOUS CASE
