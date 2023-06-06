@@ -5,8 +5,13 @@
 """
    PoissonProcess(λ)
 
-A Poisson process with intensity `λ`.
+A Poisson process with intensity `λ`. For a homogeneous process,
+define `λ` a constant value, while for an inhomogeneous process,
+define `λ` as a function or vector. If `λ` is a vector, it is
+assumed that the process is associated with a `Mesh` with the same
+number of elements as `λ`.
 """
+
 struct PoissonProcess{L<:Union{Real,Function,Vector}} <: PointProcess
   λ::L
 end
