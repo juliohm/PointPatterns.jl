@@ -7,7 +7,7 @@
 
 A Poisson process with intensity `λ`.
 """
-struct PoissonProcess{L<:Union{Real,Function}} <: PointProcess
+struct PoissonProcess{L<:Union{Real,Function,Vector}} <: PointProcess
   λ::L
 end
 
@@ -45,6 +45,23 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, m::Mesh, algo::DiscretizedSampling)
+  # simulate number of points
+  λ = p.λ
+  V = measure.(m)
+  n = rand(rng, Poisson(sum(λ .* V)))
+
+  # sample elements with weights proportial to expected number of points
+  w = WeightedSampling(n, λ .* V, replace = true)
+
+  # within each element sample a single point
+  h = HomogeneousSampling(1)
+  pts = (first(sample(rng, e, h)) for e in sample(rng, m, w))
+
+  # return point pattern
+  PointSet(collect(pts))
+end
+
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::GeometryOrMesh, algo::ThinnedSampling)
   # simulate a homogeneous process
   pp = rand(rng, PoissonProcess(algo.λmax), g)
@@ -52,3 +69,4 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::
   # thin point pattern
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
+
