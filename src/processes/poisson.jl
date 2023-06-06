@@ -52,14 +52,3 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::
   # thin point pattern
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
-
-# function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::Box, algo::DiscretizedSampling)
-#   # discretize region
-#   # TODO
-#
-#   # discretize retention
-#   # TODO
-#
-#   # sample each element
-#   # TODO
-# end

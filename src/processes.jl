@@ -55,7 +55,6 @@ function default_sampling_algorithm end
 # SAMPLING ALGORITHMS
 # --------------------
 
-struct ProductSampling end
 struct DiscretizedSampling end
 struct UnionSampling end
 
