@@ -29,7 +29,6 @@ export
 
   # sampling methods
   DiscretizedSampling,
-  ThinnedSampling,
-  SimpleThinnedSampling
+  ThinnedSampling
 
 end # module
