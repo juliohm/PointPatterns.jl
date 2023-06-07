@@ -11,8 +11,6 @@ using Distributions
 
 import Random
 
-# MyStruct{Point}() where T = MyStruct{T}(nothing)
-
 include("processes.jl")
 include("thinning.jl")
 
