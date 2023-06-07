@@ -12,7 +12,7 @@ assumed that the process is associated with a `Domain` with the same
 number of elements as `λ`.
 """
 
-struct PoissonProcess{L<:Union{Real,Function,Vector}} <: PointProcess
+struct PoissonProcess{L<:Union{Real,Function,AbstractVector}} <: PointProcess
   λ::L
 end
 
