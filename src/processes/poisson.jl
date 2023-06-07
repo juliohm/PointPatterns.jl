@@ -43,15 +43,15 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::Di
   V = measure(g)
   n = rand(rng, Poisson(λ * V))
 
-  if n == 0
+  if iszero(n)
     # PointSet{embeddim(g), coordtype(g)}([])
     nothing
   else
     # simulate homogeneous process
-    pts = sample(g, HomogeneousSampling(n))
+    points = sample(g, HomogeneousSampling(n))
 
     # return point pattern
-    PointSet(collect(pts))
+    PointSet(points)
   end
 end
 
@@ -59,24 +59,24 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, m::Mesh, algo::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, d::Domain, algo::DiscretizedSampling)
   # simulate number of points
   λ = p.λ
-  V = measure.(m)
+  V = measure.(d)
   n = rand(rng, Poisson(sum(λ .* V)))
 
-  if n == 0
+  if iszero(n)
     nothing
   else
     # sample elements with weights proportial to expected number of points
     w = WeightedSampling(n, λ .* V, replace = true)
 
     # within each element sample a single point
-    h = HomogeneousSampling(1)
-    pts = (first(sample(rng, e, h)) for e in sample(rng, m, w))
+    sampler = HomogeneousSampling(1)
+    points = (first(sample(rng, e, sampler)) for e in sample(rng, d, w))
 
     # return point pattern
-    PointSet(collect(pts))
+    PointSet(points)
   end
 end
 
@@ -106,12 +106,12 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, 
   rand_single(rng, p, g, ThinnedSampling(λmax))
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, m::Mesh, algo::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling)
   # compute intensity on centroids
-  c = centroid.(m)
+  c = centroid.(d)
   λvec = p.λ.(c)
 
   # simulate inhomogeneous process
-  rand_single(rng, PoissonProcess(λvec), m, algo)
+  rand_single(rng, PoissonProcess(λvec), d, algo)
 end
 
