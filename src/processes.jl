@@ -67,6 +67,20 @@ struct ThinnedSampling{T<:Real}
   λmax::T
 end
 
+"""
+    SimpleThinnedSampling(dims)
+
+Generate sample using Lewis-Shedler algorithm (1979). The
+maximum value of the intensity function is computed using a
+CartesianGrid of size `dims`. Increase the `dims` size in case
+the sampling throws error.
+"""
+struct SimpleThinnedSampling
+  dims::Union{Dims,Nothing}
+end
+
+SimpleThinnedSampling() = SimpleThinnedSampling(nothing)
+
 #-----------------
 # IMPLEMENTATIONS
 #-----------------

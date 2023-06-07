@@ -31,7 +31,7 @@ ishomogeneous(p::PoissonProcess{<:Function}) = false
 ishomogeneous(p::PoissonProcess{<:Vector}) = false
 
 default_sampling_algorithm(::PoissonProcess) = DiscretizedSampling()
-default_sampling_algorithm(::PoissonProcess{<:Function}) = ThinnedSampling()
+default_sampling_algorithm(::PoissonProcess{<:Function}) = SimpleThinnedSampling()
 
 #------------------
 # HOMOGENEOUS CASE
@@ -88,9 +88,30 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, 
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
 
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::SimpleThinnedSampling)
+  # compute intensity on vertices
+  box = boundingbox(g)
+  if isnothing(algo.dims)
+    m = CartesianGrid(box.min, box.max)
+  else
+    m = CartesianGrid(box.min, box.max, dims = algo.dims)
+  end
+  v = vertices(m)
+
+  # obtain λmax
+  λvec = p.λ.(v)
+  λmax = maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
+
+  # simulate inhomogeneous process
+  rand_single(rng, p, g, ThinnedSampling(λmax))
+end
+
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, m::Mesh, algo::DiscretizedSampling)
+  # compute intensity on centroids
   c = centroid.(m)
   λvec = p.λ.(c)
+
+  # simulate inhomogeneous process
   rand_single(rng, PoissonProcess(λvec), m, algo)
 end
 

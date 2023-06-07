@@ -30,6 +30,7 @@ export
   thin,
 
   # sampling methods
-  ThinnedSampling
+  ThinnedSampling,
+  SimpleThinnedSampling
 
 end # module
