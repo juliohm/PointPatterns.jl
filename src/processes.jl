@@ -72,8 +72,8 @@ end
 
 Generate sample using Lewis-Shedler algorithm (1979). The
 maximum value of the intensity function is computed using a
-CartesianGrid of size `dims`. Increase the `dims` size in case
-the sampling throws error.
+CartesianGrid of size `dims`. Increase the values of `dims`
+in case the sampling throws an error.
 """
 struct SimpleThinnedSampling
   dims::Union{Dims,Nothing}
