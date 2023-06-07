@@ -31,7 +31,24 @@ ishomogeneous(p::PoissonProcess{<:Function}) = false
 ishomogeneous(p::PoissonProcess{<:Vector}) = false
 
 default_sampling_algorithm(::PoissonProcess) = DiscretizedSampling()
-default_sampling_algorithm(::PoissonProcess{<:Function}) = SimpleThinnedSampling()
+default_sampling_algorithm(::PoissonProcess{<:Function}) = ThinnedSampling()
+
+default_lambda_max(p, g, algo::ThinnedSampling{T}) where {T<:Real} = algo.param
+
+function default_lambda_max(p, g, algo::ThinnedSampling{T}) where {T<:Dims}
+  # compute intensity on vertices
+  box = boundingbox(g)
+  if isnothing(algo.param)
+    m = CartesianGrid(box.min, box.max)
+  else
+    m = CartesianGrid(box.min, box.max, dims = algo.param)
+  end
+  v = vertices(m)
+
+  # obtain λmax
+  λvec = p.λ.(v)
+  λmax = maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
+end
 
 #------------------
 # HOMOGENEOUS CASE
@@ -81,29 +98,13 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, d::Do
 end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
+  λmax = default_lambda_max(p, g, algo)
+
   # simulate a homogeneous process
-  pp = rand(rng, PoissonProcess(algo.λmax), g)
+  pp = rand(rng, PoissonProcess(λmax), g)
 
   # thin point pattern
-  thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
-end
-
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::SimpleThinnedSampling)
-  # compute intensity on vertices
-  box = boundingbox(g)
-  if isnothing(algo.dims)
-    m = CartesianGrid(box.min, box.max)
-  else
-    m = CartesianGrid(box.min, box.max, dims = algo.dims)
-  end
-  v = vertices(m)
-
-  # obtain λmax
-  λvec = p.λ.(v)
-  λmax = maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
-
-  # simulate inhomogeneous process
-  rand_single(rng, p, g, ThinnedSampling(λmax))
+  thin(pp, RandomThinning(x -> p.λ(x) / λmax))
 end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling)
@@ -114,4 +115,3 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::
   # simulate inhomogeneous process
   rand_single(rng, PoissonProcess(λvec), d, algo)
 end
-

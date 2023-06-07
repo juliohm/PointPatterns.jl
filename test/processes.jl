@@ -44,10 +44,13 @@
     λ(s::Point2) = sum(coordinates(s) .^ 2)
     p = PoissonProcess(λ)
     for g in [seg, tri, quad, box, ball, poly, grid, mesh]
-      # simplethinnedsampling
+      # default thinnedsampling
       pp = rand(p, g)
       @test all(∈(g), pp)
-      # thinnedsampling
+      # custom thinnedsampling using grid
+      pp = rand(p, g, algo = ThinnedSampling((10,10)))
+      @test all(∈(g), pp)
+      # custom thinnedsampling using λmax
       pp = rand(p, g, algo = ThinnedSampling(λ(Point2(12.0, 12.0))))
       @test all(∈(g), pp)
       # discretizedsampling
