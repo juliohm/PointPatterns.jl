@@ -44,7 +44,7 @@
     λ(s::Point2) = sum(coordinates(s) .^ 2)
     p = PoissonProcess(λ)
     for g in [seg, tri, quad, box, ball, poly, grid, mesh]
-      # simpleThinnedSampling
+      # simplethinnedsampling
       pp = rand(p, g)
       @test all(∈(g), pp)
       # thinnedsampling
