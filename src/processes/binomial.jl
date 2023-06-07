@@ -17,5 +17,5 @@ default_sampling_algorithm(::BinomialProcess) = DiscretizedSampling()
 
 function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, g, ::DiscretizedSampling)
   points = sample(g, HomogeneousSampling(p.n))
-  PointSet(collect(points))
+  PointSet(points)
 end
