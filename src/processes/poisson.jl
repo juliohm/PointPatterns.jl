@@ -30,8 +30,8 @@ ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
 ishomogeneous(p::PoissonProcess{<:Vector}) = false
 
-default_sampling_algorithm(::PoissonProcess, ::Any) = DiscretizedSampling()
-default_sampling_algorithm(::PoissonProcess{<:Function}, ::Any) = ThinnedSampling()
+default_sampling_algorithm(::PoissonProcess) = DiscretizedSampling()
+default_sampling_algorithm(::PoissonProcess{<:Function}) = ThinnedSampling()
 
 #------------------
 # HOMOGENEOUS CASE
@@ -65,27 +65,20 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, m::Me
   V = measure.(m)
   n = rand(rng, Poisson(sum(λ .* V)))
 
-  # sample elements with weights proportial to expected number of points
-  w = WeightedSampling(n, λ .* V, replace = true)
+  if n == 0
+    nothing
+  else
+    # sample elements with weights proportial to expected number of points
+    w = WeightedSampling(n, λ .* V, replace = true)
 
-  # within each element sample a single point
-  h = HomogeneousSampling(1)
-  pts = (first(sample(rng, e, h)) for e in sample(rng, m, w))
+    # within each element sample a single point
+    h = HomogeneousSampling(1)
+    pts = (first(sample(rng, e, h)) for e in sample(rng, m, w))
 
-  # return point pattern
-  PointSet(collect(pts))
+    # return point pattern
+    PointSet(collect(pts))
+  end
 end
-
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, m::Mesh, algo::DiscretizedSampling)
-  c = centroid.(m)
-  λvec = p.λ.(c)
-  rand_single(rng, PoissonProcess(λvec), m, algo)
-end
-
-# function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g::Geometry, algo::DiscretizedSampling)
-#   g = discretize(g)
-#   rand_single(rng, p, g, algo)
-# end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
   # simulate a homogeneous process
@@ -93,5 +86,11 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, 
 
   # thin point pattern
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
+end
+
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, m::Mesh, algo::DiscretizedSampling)
+  c = centroid.(m)
+  λvec = p.λ.(c)
+  rand_single(rng, PoissonProcess(λvec), m, algo)
 end
 

@@ -23,16 +23,16 @@ Generate `n` realizations of spatial point process `p`
 inside geometry `g`. Optionally specify sampling
 algorithm `algo` and random number generator `rng`.
 """
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p)) =
   [rand_single(rng, p, g, algo) for i in 1:n]
 
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_algorithm(p)) =
   rand_single(rng, p, g, algo)
 
-Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
+Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p)) =
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
-Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
+Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p)) =
   rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
@@ -44,10 +44,9 @@ Generate a single realization of spatial point process
 function rand_single end
 
 """
-    default_sampling_algorithm(p, g)
+    default_sampling_algorithm(p)
 
-Default sampling algorithm for spatial point process `p`
-on geometry `g`.
+Default sampling algorithm for spatial point process `p`.
 """
 function default_sampling_algorithm end
 
