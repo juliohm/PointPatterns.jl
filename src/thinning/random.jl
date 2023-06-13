@@ -41,5 +41,5 @@ function thin(pp::PointSet, t::RandomThinning{<:Function})
       push!(inds, j)
     end
   end
-  PointSet(pp.items[inds])
+  view(pp, inds)
 end
