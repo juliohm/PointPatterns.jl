@@ -7,7 +7,7 @@
 
 Random thining with retention probability `p`.
 """
-struct RandomThinning{P<:Union{Real,Function}} <: AbstractThinning
+struct RandomThinning{P<:Union{Real,Function}} <: ThinningMethod
   p::P
 end
 

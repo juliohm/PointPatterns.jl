@@ -24,11 +24,12 @@ export
   ishomogeneous,
 
   # algorithms
-  SamplingAlgorithm,
+  PointPatternAlgo,
+  ConstantIntensity,
   LewisShedler,
 
   # thinning methods
-  AbstractThinning,
+  ThinningMethod,
   RandomThinning,
   thin
 

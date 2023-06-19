@@ -50,16 +50,16 @@ on geometry or domain `g`.
 """
 function default_sampling_algorithm end
 
-# --------------------
-# SAMPLING ALGORITHMS
-# --------------------
+# -------------------------
+# POINT PATTERN ALGORITHMS
+# -------------------------
 
 """
-    SamplingAlgorithm
+    PointPatternAlgo
 
-A sampling algorithm for point processes.
+A method for sampling point patterns.
 """
-abstract type SamplingAlgorithm end
+abstract type PointPatternAlgo end
 
 """
     LewisShedler(λmax)
@@ -67,19 +67,17 @@ abstract type SamplingAlgorithm end
 Generate sample using Lewis-Shedler algorithm (1979) with
 maximum real value `λmax` of the intensity function.
 """
-struct LewisShedler{T<:Real} <: SamplingAlgorithm
+struct LewisShedler{T<:Real} <: PointPatternAlgo
   λmax::T
 end
 
 """
-    DiscretizedSampling()
+    ConstantIntensity()
 
 Generate sample assuming the intensity is constant over a `Geometry`
 or piecewise constant over a `Domain`.
 """
-struct DiscretizedSampling <: SamplingAlgorithm end
-
-struct UnionSampling <: SamplingAlgorithm end
+struct ConstantIntensity <: PointPatternAlgo end
 
 #-----------------
 # IMPLEMENTATIONS
@@ -87,4 +85,34 @@ struct UnionSampling <: SamplingAlgorithm end
 
 include("processes/binomial.jl")
 include("processes/poisson.jl")
-include("processes/union.jl")
+
+# ----------------
+# UNION PROCESSES
+# ----------------
+
+"""
+    UnionProcess(p₁, p₂)
+
+Union (or superposition) of spatial point processes `p₁` and `p₂`.
+"""
+struct UnionProcess{P₁<:PointProcess,P₂<:PointProcess} <: PointProcess
+  p₁::P₁
+  p₂::P₂
+end
+
+"""
+    p₁ ∪ p₂
+
+Return the union of point processes `p₁` and `p₂`.
+"""
+Base.union(p₁::PointProcess, p₂::PointProcess) = UnionProcess(p₁, p₂)
+
+ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
+
+default_sampling_algorithm(::UnionProcess, ::Any) = nothing
+
+function rand_single(rng::Random.AbstractRNG, p::UnionProcess, g, ::Nothing)
+  pp₁ = rand(rng, p.p₁, g)
+  pp₂ = rand(rng, p.p₂, g)
+  PointSet([coordinates.(pp₁); coordinates.(pp₂)])
+end

@@ -53,7 +53,7 @@
       @test all(∈(g), pp)
 
       g = discretize(g)
-      pp = rand(p, g, algo=PointPatterns.DiscretizedSampling())
+      pp = rand(p, g, algo=ConstantIntensity())
       @test all(∈(g), g)
     end
 
