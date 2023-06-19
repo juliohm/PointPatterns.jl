@@ -48,11 +48,11 @@
       pp = rand(p, g)
       @test all(∈(g), pp)
       # custom thinnedsampling using λmax
-      pp = rand(p, g, algo = ThinnedSampling(λ(Point2(12.0, 12.0))))
+      pp = rand(p, g, algo = PointPatterns.ThinnedSampling(λ(Point2(12.0, 12.0))))
       @test all(∈(g), pp)
       # discretizedsampling
       g = discretize(g)
-      pp = rand(p, g, algo = DiscretizedSampling())
+      pp = rand(p, g, algo = PointPatterns.DiscretizedSampling())
       @test all(∈(g), g)
     end
 
@@ -61,7 +61,7 @@
       λ(s::Point2) = sum(coordinates(s) .^ 2)
       λvec = λ.(centroid.(g))
       p = PoissonProcess(λvec)
-      # discretizedsampling
+      # discretizedsampling by default
       pp = rand(p, g)
       @test all(∈(g), pp)
     end
