@@ -56,15 +56,6 @@ function default_sampling_algorithm end
 # --------------------
 
 """
-    DiscretizedSampling()
-
-Generate sample assuming the intensity is constant over a `Geometry`
-or piecewise constant over a `Domain`.
-"""
-struct DiscretizedSampling end
-struct UnionSampling end
-
-"""
     ThinnedSampling(λmax)
 
 Generate sample using Lewis-Shedler algorithm (1979) with
@@ -73,6 +64,16 @@ maximum real value `λmax` of the intensity function.
 struct ThinnedSampling{T<:Real}
   λmax::T
 end
+
+"""
+    DiscretizedSampling()
+
+Generate sample assuming the intensity is constant over a `Geometry`
+or piecewise constant over a `Domain`.
+"""
+struct DiscretizedSampling end
+
+struct UnionSampling end
 
 #-----------------
 # IMPLEMENTATIONS
