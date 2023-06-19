@@ -66,7 +66,7 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, 
 
   # thin point pattern
   points = thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
-  PointSet(points.domain.geoms[points.inds])
+  PointSet(collect(points))
 end
 
 rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::ConstantIntensity) =
