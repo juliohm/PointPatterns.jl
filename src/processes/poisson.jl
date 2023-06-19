@@ -23,7 +23,8 @@ Base.union(p₁::PoissonProcess{<:Real}, p₂::PoissonProcess{<:Function}) = Poi
 
 Base.union(p₁::PoissonProcess{<:Function}, p₂::PoissonProcess{<:Real}) = PoissonProcess(x -> p₁.λ(x) + p₂.λ)
 
-Base.union(p₁::PoissonProcess{<:AbstractVector}, p₂::PoissonProcess{<:AbstractVector}) = PoissonProcess(x -> p₁.λ + p₂.λ)
+Base.union(p₁::PoissonProcess{<:AbstractVector}, p₂::PoissonProcess{<:AbstractVector}) =
+  PoissonProcess(x -> p₁.λ + p₂.λ)
 
 ishomogeneous(p::PoissonProcess{<:Real}) = true
 
@@ -95,7 +96,7 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector
     nothing
   else
     # sample elements with weights proportial to expected number of points
-    w = WeightedSampling(n, λ .* V, replace = true)
+    w = WeightedSampling(n, λ .* V, replace=true)
 
     # within each element sample a single point
     sampler = HomogeneousSampling(1)

@@ -32,8 +32,7 @@ Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_alg
 Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
-Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
-  rand(Random.GLOBAL_RNG, p, g; algo=algo)
+Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) = rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
     rand_single(rng, p, g, algo)
