@@ -20,7 +20,7 @@ ishomogeneous(p::PointProcess) = false
     rand([rng], p, g, n=1; [algo])
 
 Generate `n` realizations of spatial point process `p`
-inside geometry `g`. Optionally specify sampling
+inside geometry or domain `g`. Optionally specify sampling
 algorithm `algo` and random number generator `rng`.
 """
 Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
@@ -39,7 +39,7 @@ Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
     rand_single(rng, p, g, algo)
 
 Generate a single realization of spatial point process
-`p` inside geometry `g` with sampling `algo`.
+`p` inside geometry or domain `g` with sampling `algo`.
 """
 function rand_single end
 
