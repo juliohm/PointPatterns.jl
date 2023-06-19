@@ -23,16 +23,16 @@ Generate `n` realizations of spatial point process `p`
 inside geometry `g`. Optionally specify sampling
 algorithm `algo` and random number generator `rng`.
 """
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g::Geometry, n::Int; algo=default_sampling_algorithm(p, g)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
   [rand_single(rng, p, g, algo) for i in 1:n]
 
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g::Geometry; algo=default_sampling_algorithm(p, g)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
   rand_single(rng, p, g, algo)
 
-Base.rand(p::PointProcess, g::Geometry, n::Int; algo=default_sampling_algorithm(p, g)) =
+Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
-Base.rand(p::PointProcess, g::Geometry; algo=default_sampling_algorithm(p, g)) =
+Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
@@ -47,7 +47,7 @@ function rand_single end
     default_sampling_algorithm(p, g)
 
 Default sampling algorithm for spatial point process `p`
-on geometry `g`.
+on geometry or domain `g`.
 """
 function default_sampling_algorithm end
 
@@ -55,9 +55,24 @@ function default_sampling_algorithm end
 # SAMPLING ALGORITHMS
 # --------------------
 
-struct ProductSampling end
-struct ThinnedSampling end
+"""
+    ThinnedSampling(λmax)
+
+Generate sample using Lewis-Shedler algorithm (1979) with
+maximum real value `λmax` of the intensity function.
+"""
+struct ThinnedSampling{T<:Real}
+  λmax::T
+end
+
+"""
+    DiscretizedSampling()
+
+Generate sample assuming the intensity is constant over a `Geometry`
+or piecewise constant over a `Domain`.
+"""
 struct DiscretizedSampling end
+
 struct UnionSampling end
 
 #-----------------

@@ -5,9 +5,14 @@
 """
    PoissonProcess(λ)
 
-A Poisson process with intensity `λ`.
+A Poisson process with intensity `λ`. For a homogeneous process,
+define `λ` as a constant real value, while for an inhomogeneous process,
+define `λ` as a function or vector of values. If `λ` is a vector, it is
+assumed that the process is associated with a `Domain` with the same
+number of elements as `λ`.
 """
-struct PoissonProcess{L<:Union{Real,Function}} <: PointProcess
+
+struct PoissonProcess{L<:Union{Real,Function,AbstractVector}} <: PointProcess
   λ::L
 end
 
@@ -19,61 +24,82 @@ Base.union(p₁::PoissonProcess{<:Real}, p₂::PoissonProcess{<:Function}) = Poi
 
 Base.union(p₁::PoissonProcess{<:Function}, p₂::PoissonProcess{<:Real}) = PoissonProcess(x -> p₁.λ(x) + p₂.λ)
 
+Base.union(p₁::PoissonProcess{<:AbstractVector}, p₂::PoissonProcess{<:AbstractVector}) = PoissonProcess(x -> p₁.λ + p₂.λ)
+
 ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
+ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
-default_sampling_algorithm(::PoissonProcess, ::Geometry) = DiscretizedSampling()
-default_sampling_algorithm(::PoissonProcess{<:Real}, ::Box) = ProductSampling()
+default_sampling_algorithm(::PoissonProcess, ::Any) = DiscretizedSampling()
+default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = ThinnedSampling(default_lambda_max(p, g))
+
+function default_lambda_max(p::PoissonProcess{<:Function}, g)
+  points = sample(g, HomogeneousSampling(10000))
+  λvec = p.λ.(points)
+  maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
+end
 
 #------------------
 # HOMOGENEOUS CASE
 #------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g::Geometry, ::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::DiscretizedSampling)
   # simulate number of points
   λ = p.λ
   V = measure(g)
   n = rand(rng, Poisson(λ * V))
 
-  # simulate homogeneous process
-  pts = sample(g, HomogeneousSampling(n))
+  if iszero(n)
+    # PointSet{embeddim(g), coordtype(g)}([])
+    nothing
+  else
+    # simulate homogeneous process
+    points = sample(g, HomogeneousSampling(n))
 
-  # return point pattern
-  PointSet(collect(pts))
-end
-
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, b::Box, ::ProductSampling)
-  # region configuration
-  lo, up = coordinates.(extrema(b))
-
-  # simulate number of points
-  λ = p.λ
-  V = measure(b)
-  n = rand(rng, Poisson(λ * V))
-
-  # product of uniform distributions
-  U = product_distribution([Uniform(lo[i], up[i]) for i in 1:embeddim(b)])
-
-  # return point pattern
-  PointSet(rand(rng, U, n))
+    # return point pattern
+    PointSet(points)
+  end
 end
 
 #--------------------
 # INHOMOGENEOUS CASE
 #--------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::Box, algo::DiscretizedSampling)
-  # discretize region
-  # TODO
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::DiscretizedSampling)
+  # simulate number of points
+  λ = p.λ
+  V = measure.(d)
+  n = rand(rng, Poisson(sum(λ .* V)))
 
-  # discretize retention
-  # TODO
+  # simulate n points
+  if iszero(n)
+    nothing
+  else
+    # sample elements with weights proportial to expected number of points
+    w = WeightedSampling(n, λ .* V, replace = true)
 
-  # sample each element
-  # TODO
+    # within each element sample a single point
+    sampler = HomogeneousSampling(1)
+    points = (first(sample(rng, e, sampler)) for e in sample(rng, d, w))
+
+    # return point pattern
+    PointSet(points)
+  end
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, b::Box, algo::ThinnedSampling)
-  # Lewis-Shedler algorithm
-  # TODO
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
+  # simulate a homogeneous process
+  pp = rand_single(rng, PoissonProcess(algo.λmax), g, DiscretizedSampling())
+
+  # thin point pattern
+  thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
+end
+
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling)
+  # compute intensity on centroids
+  c = centroid.(d)
+  λvec = p.λ.(c)
+
+  # simulate inhomogeneous process
+  rand_single(rng, PoissonProcess(λvec), d, algo)
 end
