@@ -54,6 +54,12 @@ function default_sampling_algorithm end
 # SAMPLING ALGORITHMS
 # --------------------
 
+"""
+    DiscretizedSampling()
+
+Generate sample assuming the intensity is constant over a `Geometry`
+or piecewise constant over a `Domain`.
+"""
 struct DiscretizedSampling end
 struct UnionSampling end
 
