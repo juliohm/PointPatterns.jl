@@ -28,7 +28,7 @@ Base.union(p₁::PoissonProcess{<:AbstractVector}, p₂::PoissonProcess{<:Abstra
 
 ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
-ishomogeneous(p::PoissonProcess{<:Vector}) = false
+ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
 default_sampling_algorithm(::PoissonProcess, g) = DiscretizedSampling()
 default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = ThinnedSampling(default_lambda_max(p, g))
@@ -65,7 +65,7 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, d::Domain, algo::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::DiscretizedSampling)
   # simulate number of points
   λ = p.λ
   V = measure.(d)
