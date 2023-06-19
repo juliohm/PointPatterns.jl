@@ -46,13 +46,12 @@
     # inhomogeneous with intensity function
     p = PoissonProcess(λ)
     for g in [seg, tri, quad, box, ball, poly, grid, mesh]
-      # default thinnedsampling
       pp = rand(p, g)
       @test all(∈(g), pp)
-      # custom thinnedsampling using λmax
-      pp = rand(p, g, algo=PointPatterns.ThinnedSampling(λ(Point2(12.0, 12.0))))
+
+      pp = rand(p, g, algo=LewisShedler(λ(Point2(12.0, 12.0))))
       @test all(∈(g), pp)
-      # discretizedsampling
+
       g = discretize(g)
       pp = rand(p, g, algo=PointPatterns.DiscretizedSampling())
       @test all(∈(g), g)

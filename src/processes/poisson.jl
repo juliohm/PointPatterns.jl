@@ -34,7 +34,7 @@ ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
 default_sampling_algorithm(::PoissonProcess, ::Any) = DiscretizedSampling()
 
-default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = ThinnedSampling(default_lambda_max(p, g))
+default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = LewisShedler(default_lambda_max(p, g))
 
 function default_lambda_max(p::PoissonProcess{<:Function}, g)
   points = sample(g, HomogeneousSampling(10000))
@@ -67,7 +67,7 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::LewisShedler)
   # simulate a homogeneous process
   pp = rand_single(rng, PoissonProcess(algo.λmax), g, DiscretizedSampling())
 

@@ -22,6 +22,9 @@ export
   UnionProcess,
   ishomogeneous,
 
+  # algorithms
+  LewisShedler,
+
   # thinning methods
   AbstractThinning,
   RandomThinning,

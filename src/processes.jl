@@ -55,12 +55,12 @@ function default_sampling_algorithm end
 # --------------------
 
 """
-    ThinnedSampling(λmax)
+    LewisShedler(λmax)
 
 Generate sample using Lewis-Shedler algorithm (1979) with
 maximum real value `λmax` of the intensity function.
 """
-struct ThinnedSampling{T<:Real}
+struct LewisShedler{T<:Real}
   λmax::T
 end
 

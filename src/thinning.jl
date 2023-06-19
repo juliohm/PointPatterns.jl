@@ -26,4 +26,5 @@ thin(::PointSet, ::AbstractThinning)
 #-----------------
 # IMPLEMENTATIONS
 #-----------------
+
 include("thinning/random.jl")
