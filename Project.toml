@@ -1,7 +1,7 @@
 name = "PointPatterns"
 uuid = "e61b41b6-3414-4803-863f-2b69057479eb"
 authors = ["Júlio Hoffimann"]
-version = "0.5.0"
+version = "0.5.1"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
