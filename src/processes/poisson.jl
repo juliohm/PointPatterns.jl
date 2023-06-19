@@ -78,5 +78,5 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector
   n = rand(rng, Poisson(sum(λ .* V)))
 
   # simulate n points
-  iszero(n) ? nothing : PointSet(_sampleweights(rng, d, HomogeneousSampling(n), λ .* V))
+  iszero(n) ? nothing : PointSet(sample(rng, d, HomogeneousSampling(n, λ .* V)))
 end

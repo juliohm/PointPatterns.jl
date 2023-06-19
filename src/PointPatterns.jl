@@ -5,7 +5,7 @@
 module PointPatterns
 
 using Meshes
-import Meshes: _sampleweights
+
 using GeoStatsBase
 
 using Distributions
