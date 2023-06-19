@@ -33,6 +33,9 @@
   end
 
   @testset "Poisson" begin
+    # helper function
+    λ(s::Point2) = sum(coordinates(s) .^ 2)
+
     # homogeneous
     p = PoissonProcess(10.0)
     for g in [seg, tri, quad, box, ball, poly, grid, mesh]
@@ -41,7 +44,6 @@
     end
 
     # inhomogeneous with intensity function
-    λ(s::Point2) = sum(coordinates(s) .^ 2)
     p = PoissonProcess(λ)
     for g in [seg, tri, quad, box, ball, poly, grid, mesh]
       # default thinnedsampling
@@ -58,7 +60,6 @@
 
     # inhomogeneous with piecewise constant intensity
     for g in [grid, mesh]
-      λ(s::Point2) = sum(coordinates(s) .^ 2)
       λvec = λ.(centroid.(g))
       p = PoissonProcess(λvec)
       # discretizedsampling by default

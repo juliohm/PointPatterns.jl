@@ -53,7 +53,6 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::Di
   n = rand(rng, Poisson(λ * V))
 
   if iszero(n)
-    # PointSet{embeddim(g), coordtype(g)}([])
     nothing
   else
     # simulate homogeneous process
@@ -76,14 +75,8 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, 
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling)
-  # compute intensity on centroids
-  c = centroid.(d)
-  λvec = p.λ.(c)
-
-  # simulate inhomogeneous process
-  rand_single(rng, PoissonProcess(λvec), d, algo)
-end
+rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling) =
+  rand_single(rng, PoissonProcess(p.λ.(centroid.(d))), d, algo)
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::DiscretizedSampling)
   # simulate number of points
