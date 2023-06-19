@@ -23,6 +23,7 @@ export
   ishomogeneous,
 
   # algorithms
+  SamplingAlgorithm,
   LewisShedler,
 
   # thinning methods
