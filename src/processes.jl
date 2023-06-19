@@ -44,9 +44,10 @@ Generate a single realization of spatial point process
 function rand_single end
 
 """
-    default_sampling_algorithm(p)
+    default_sampling_algorithm(p, g)
 
-Default sampling algorithm for spatial point process `p`.
+Default sampling algorithm for spatial point process `p`
+on geometry or domain `g`.
 """
 function default_sampling_algorithm end
 
