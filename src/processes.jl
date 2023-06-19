@@ -55,11 +55,11 @@ function default_sampling_algorithm end
 # -------------------------
 
 """
-    PointPatternAlgorithm
+    PointPatternAlgo
 
-An algorithm for sampling point patterns.
+A method for sampling point patterns.
 """
-abstract type PointPatternAlgorithm end
+abstract type PointPatternAlgo end
 
 """
     LewisShedler(λmax)
@@ -67,19 +67,19 @@ abstract type PointPatternAlgorithm end
 Generate sample using Lewis-Shedler algorithm (1979) with
 maximum real value `λmax` of the intensity function.
 """
-struct LewisShedler{T<:Real} <: PointPatternAlgorithm
+struct LewisShedler{T<:Real} <: PointPatternAlgo
   λmax::T
 end
 
 """
-    DiscretizedSampling()
+    ConstantIntensity()
 
 Generate sample assuming the intensity is constant over a `Geometry`
 or piecewise constant over a `Domain`.
 """
-struct DiscretizedSampling <: PointPatternAlgorithm end
+struct ConstantIntensity <: PointPatternAlgo end
 
-struct UnionSampling <: PointPatternAlgorithm end
+struct UnionSampling <: PointPatternAlgo end
 
 #-----------------
 # IMPLEMENTATIONS

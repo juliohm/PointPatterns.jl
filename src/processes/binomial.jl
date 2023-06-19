@@ -13,9 +13,9 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-default_sampling_algorithm(::BinomialProcess, ::Any) = DiscretizedSampling()
+default_sampling_algorithm(::BinomialProcess, ::Any) = ConstantIntensity()
 
-function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, g, ::DiscretizedSampling)
-  points = sample(g, HomogeneousSampling(p.n))
+function rand_single(rng::Random.AbstractRNG, p::BinomialProcess, g, ::ConstantIntensity)
+  points = sample(rng, g, HomogeneousSampling(p.n))
   PointSet(points)
 end

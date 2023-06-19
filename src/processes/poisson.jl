@@ -32,7 +32,7 @@ ishomogeneous(p::PoissonProcess{<:Function}) = false
 
 ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
-default_sampling_algorithm(::PoissonProcess, ::Any) = DiscretizedSampling()
+default_sampling_algorithm(::PoissonProcess, ::Any) = ConstantIntensity()
 
 default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = LewisShedler(default_lambda_max(p, g))
 
@@ -46,7 +46,7 @@ end
 # HOMOGENEOUS CASE
 #------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::ConstantIntensity)
   # simulate number of points
   λ = p.λ
   V = measure(g)
@@ -69,16 +69,16 @@ end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::LewisShedler)
   # simulate a homogeneous process
-  pp = rand_single(rng, PoissonProcess(algo.λmax), g, DiscretizedSampling())
+  pp = rand_single(rng, PoissonProcess(algo.λmax), g, ConstantIntensity())
 
   # thin point pattern
   thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
 
-rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling) =
+rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::ConstantIntensity) =
   rand_single(rng, PoissonProcess(p.λ.(centroid.(d))), d, algo)
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::DiscretizedSampling)
+function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::ConstantIntensity)
   # simulate number of points
   λ = p.λ
   V = measure.(d)

@@ -23,7 +23,8 @@ export
   ishomogeneous,
 
   # algorithms
-  PointPatternAlgorithm,
+  PointPatternAlgo,
+  ConstantIntensity,
   LewisShedler,
 
   # thinning methods
