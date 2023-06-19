@@ -47,9 +47,6 @@
       # default thinnedsampling
       pp = rand(p, g)
       @test all(∈(g), pp)
-      # custom thinnedsampling using grid
-      pp = rand(p, g, algo = ThinnedSampling((10,10)))
-      @test all(∈(g), pp)
       # custom thinnedsampling using λmax
       pp = rand(p, g, algo = ThinnedSampling(λ(Point2(12.0, 12.0))))
       @test all(∈(g), pp)

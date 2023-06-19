@@ -23,16 +23,16 @@ Generate `n` realizations of spatial point process `p`
 inside geometry `g`. Optionally specify sampling
 algorithm `algo` and random number generator `rng`.
 """
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
   [rand_single(rng, p, g, algo) for i in 1:n]
 
-Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_algorithm(p)) =
+Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
   rand_single(rng, p, g, algo)
 
-Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p)) =
+Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
 
-Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p)) =
+Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
@@ -58,18 +58,14 @@ struct DiscretizedSampling end
 struct UnionSampling end
 
 """
-    ThinnedSampling(param)
+    ThinnedSampling(λmax)
 
-Generate sample using Lewis-Shedler algorithm (1979) using `param`.
-It can be a real value to define the maximum value of the intensity
-function or an `NTuple` to define the dimensions of the
-`CartesianGrid` used to obtain the intensity maximum value.
+Generate sample using Lewis-Shedler algorithm (1979) with
+maximum real value `λmax` of the intensity function.
 """
-struct ThinnedSampling{T<:Union{Real,Dims}}
-  param::Union{Nothing,T}
+struct ThinnedSampling{T<:Real}
+  λmax::T
 end
-
-ThinnedSampling() = ThinnedSampling{Dims}(nothing)
 
 #-----------------
 # IMPLEMENTATIONS

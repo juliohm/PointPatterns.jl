@@ -30,24 +30,13 @@ ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
 ishomogeneous(p::PoissonProcess{<:Vector}) = false
 
-default_sampling_algorithm(::PoissonProcess) = DiscretizedSampling()
-default_sampling_algorithm(::PoissonProcess{<:Function}) = ThinnedSampling()
+default_sampling_algorithm(::PoissonProcess, g) = DiscretizedSampling()
+default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = ThinnedSampling(default_lambda_max(p, g))
 
-default_lambda_max(p, g, algo::ThinnedSampling{T}) where {T<:Real} = algo.param
-
-function default_lambda_max(p, g, algo::ThinnedSampling{T}) where {T<:Dims}
-  # compute intensity on vertices
-  box = boundingbox(g)
-  if isnothing(algo.param)
-    m = CartesianGrid(box.min, box.max)
-  else
-    m = CartesianGrid(box.min, box.max, dims = algo.param)
-  end
-  v = vertices(m)
-
-  # obtain λmax
-  λvec = p.λ.(v)
-  λmax = maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
+function default_lambda_max(p::PoissonProcess{<:Function}, g)
+  points = sample(g, HomogeneousSampling(10000))
+  λvec = p.λ.(points)
+  maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
 end
 
 #------------------
@@ -82,6 +71,7 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, d::Do
   V = measure.(d)
   n = rand(rng, Poisson(sum(λ .* V)))
 
+  # simulate n points
   if iszero(n)
     nothing
   else
@@ -98,13 +88,11 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Vector}, d::Do
 end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::ThinnedSampling)
-  λmax = default_lambda_max(p, g, algo)
-
   # simulate a homogeneous process
-  pp = rand(rng, PoissonProcess(λmax), g)
+  pp = rand(rng, PoissonProcess(algo.λmax), g)
 
   # thin point pattern
-  thin(pp, RandomThinning(x -> p.λ(x) / λmax))
+  thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))
 end
 
 function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::DiscretizedSampling)
