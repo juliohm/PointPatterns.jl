@@ -5,7 +5,6 @@
 module PointPatterns
 
 using Meshes
-
 using GeoStatsBase
 
 using Distributions
