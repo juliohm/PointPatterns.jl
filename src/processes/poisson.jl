@@ -52,15 +52,8 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::Di
   V = measure(g)
   n = rand(rng, Poisson(λ * V))
 
-  if iszero(n)
-    nothing
-  else
-    # simulate homogeneous process
-    points = sample(g, HomogeneousSampling(n))
-
-    # return point pattern
-    PointSet(points)
-  end
+  # simulate n points
+  iszero(n) ? nothing : PointSet(sample(g, HomogeneousSampling(n)))
 end
 
 #--------------------
@@ -85,17 +78,5 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector
   n = rand(rng, Poisson(sum(λ .* V)))
 
   # simulate n points
-  if iszero(n)
-    nothing
-  else
-    # sample elements with weights proportial to expected number of points
-    w = WeightedSampling(n, λ .* V, replace=true)
-
-    # within each element sample a single point
-    sampler = HomogeneousSampling(1)
-    points = (first(sample(rng, e, sampler)) for e in sample(rng, d, w))
-
-    # return point pattern
-    PointSet(points)
-  end
+  iszero(n) ? nothing : PointSet(_sampleweights(rng, d, HomogeneousSampling(n), λ .* V))
 end
