@@ -21,7 +21,7 @@ Base.union(p₁::PointProcess, p₂::PointProcess) = UnionProcess(p₁, p₂)
 
 ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 
-default_sampling_algorithm(::UnionProcess, g) = UnionSampling()
+default_sampling_algorithm(::UnionProcess, ::Any) = UnionSampling()
 
 function rand_single(rng::Random.AbstractRNG, p::UnionProcess, g, ::UnionSampling)
   pp₁ = rand(rng, p.p₁, g)

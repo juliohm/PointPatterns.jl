@@ -30,7 +30,7 @@ ishomogeneous(p::PoissonProcess{<:Real}) = true
 ishomogeneous(p::PoissonProcess{<:Function}) = false
 ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
-default_sampling_algorithm(::PoissonProcess, g) = DiscretizedSampling()
+default_sampling_algorithm(::PoissonProcess, ::Any) = DiscretizedSampling()
 default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = ThinnedSampling(default_lambda_max(p, g))
 
 function default_lambda_max(p::PoissonProcess{<:Function}, g)
