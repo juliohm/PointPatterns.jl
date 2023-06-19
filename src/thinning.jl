@@ -3,25 +3,25 @@
 # ------------------------------------------------------------------
 
 """
-    AbstractThinning
+    ThinningMethod
 
 A method for thinning spatial point processes and patterns.
 """
-abstract type AbstractThinning end
+abstract type ThinningMethod end
 
 """
-    thin(p, t)
+    thin(process, method)
 
-Thin spatial point process `p` with thinning method `t`.
+Thin spatial point `process` with thinning `method`.
 """
 function thin end
 
 """
-    thin(pp, t)
+    thin(pattern, method)
 
-Thin spatial point pattern `pp` with thinning method `t`.
+Thin spatial point `pattern` with thinning `method`.
 """
-thin(::PointSet, ::AbstractThinning)
+thin(::PointSet, ::ThinningMethod)
 
 #-----------------
 # IMPLEMENTATIONS
