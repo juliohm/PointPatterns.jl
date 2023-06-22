@@ -5,7 +5,16 @@
 """
     RandomThinning(p)
 
-Random thining with retention probability `p`.
+Random thining with retention probability `p`, which can
+be a constant probability value in `[0,1]` or a function
+mapping a point to a probability.
+
+## Examples
+
+```julia
+RandomThinning(0.5)
+RandomThinning(p -> sum(coordinates(p)))
+```
 """
 struct RandomThinning{P<:Union{Real,Function}} <: ThinningMethod
   p::P
