@@ -3,16 +3,27 @@
 # ------------------------------------------------------------------
 
 """
-   ClusterProcess(p, o, d)
+   ClusterProcess(p, ofun)
 
-A cluster process with process `p` for parents and with process `o` for
-offsprings. The offspring domain for each parent point is computed by
-evaluating the function `d` over the parent point.
+A cluster process with parent process `p` and offsprings generated
+with `ofun`. It is a function that take a parent point and generates
+a set of offspring points as a PointSet.
 """
-struct ClusterProcess{P1<:PointProcess,P2<:PointProcess,F<:Function} <: PointProcess
-  p::P1
-  o::P2
-  d::F
+struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
+  p::P
+  ofun::F
+end
+
+function ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function)
+  ClusterProcess(p, parent -> rand(o, gfun(parent)))
+end
+
+function ClusterProcess(p::PointProcess, o::PoissonProcess{<:Function}, gfun::Function; centered = true)
+  if centered
+    ClusterProcess(p, parent -> rand(PoissonProcess(x -> o.λ(Point(x - parent))), gfun(parent)))
+  else
+    ClusterProcess(p, parent -> rand(o, gfun(parent)))
+  end
 end
 
 default_sampling_algorithm(::ClusterProcess, ::Any) = ConstantIntensity()
@@ -22,13 +33,14 @@ function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, ::ConstantIn
   parents = rand(p.p, g)
 
   # generate offsprings
-  offsprings = [rand(p.o, p.d(parent)) for parent in parents]
+  offsprings = [p.ofun(parent) for parent in parents]
+  # offsprings = [rand(p.o, p.d(parent)) for parent in parents]
 
   # combine offsprings into single set
   points = mapreduce(vcat, offsprings) do pset
     isnothing(pset) ? [] : collect(view(pset, g))
   end
 
-  PointSet(points)
+  PointSet{2,Float64}(points)
 end
 
