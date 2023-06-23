@@ -23,6 +23,8 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonClusterProcess, g, ::Con
 
   # generate offsprings
   offsprings = [rand(p.o, p.dₒ(parent)) for parent in parents]
+
+  # combine offsprings into single set
   points = mapreduce(vcat, offsprings) do pset
     isnothing(pset) ? [] : collect(view(pset, g))
   end
