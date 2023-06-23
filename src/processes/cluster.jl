@@ -3,17 +3,17 @@
 # ------------------------------------------------------------------
 
 """
-    ClusterProcess(p, ofun)
+    ClusterProcess(proc, ofun)
 
-A cluster process with parent process `p` and offsprings generated
+A cluster process with parent process `proc` and offsprings generated
 with `ofun`. It is a function that takes a parent point and returns
 a point pattern from another point process.
 
-    ClusterProcess(p, o, gfun)
+    ClusterProcess(proc, offs, gfun)
 
-Alternatively, specify the parent process `p`, the offspring process `o`
-and the geometry function `gfun`. It is a function that takes a parent
-point and returns a geometry or domain for the offspring process.
+Alternatively, specify the parent process `proc`, the offspring process
+`offs` and the geometry function `gfun`. It is a function that takes a
+parent point and returns a geometry or domain for the offspring process.
 
 ## Examples
 
@@ -22,14 +22,14 @@ point and returns a geometry or domain for the offspring process.
 ```
 """
 struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
-  p::P
+  proc::P
   ofun::F
 end
 
 ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) =
   ClusterProcess(p, parent -> rand(o, gfun(parent)))
 
-default_sampling_algorithm(p::ClusterProcess, g) = nothing
+default_sampling_algorithm(::ClusterProcess, ::Any) = nothing
 
 function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
   # retrieve parameters
@@ -37,7 +37,7 @@ function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
   T = coordtype(g)
 
   # generate parents
-  parents = rand_single(rng, p.p, g)
+  parents = rand(rng, p.proc, g)
 
   # generate offsprings
   offsprings = p.ofun.(parents)

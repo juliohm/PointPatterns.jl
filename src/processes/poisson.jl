@@ -15,17 +15,6 @@ struct PoissonProcess{L<:Union{Real,Function,AbstractVector}} <: PointProcess
   λ::L
 end
 
-Base.union(p₁::PoissonProcess{<:Real}, p₂::PoissonProcess{<:Real}) = PoissonProcess(p₁.λ + p₂.λ)
-
-Base.union(p₁::PoissonProcess{<:Function}, p₂::PoissonProcess{<:Function}) = PoissonProcess(x -> p₁.λ(x) + p₂.λ(x))
-
-Base.union(p₁::PoissonProcess{<:Real}, p₂::PoissonProcess{<:Function}) = PoissonProcess(x -> p₁.λ + p₂.λ(x))
-
-Base.union(p₁::PoissonProcess{<:Function}, p₂::PoissonProcess{<:Real}) = PoissonProcess(x -> p₁.λ(x) + p₂.λ)
-
-Base.union(p₁::PoissonProcess{<:AbstractVector}, p₂::PoissonProcess{<:AbstractVector}) =
-  PoissonProcess(x -> p₁.λ + p₂.λ)
-
 ishomogeneous(p::PoissonProcess{<:Real}) = true
 
 ishomogeneous(p::PoissonProcess{<:Function}) = false
