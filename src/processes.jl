@@ -24,10 +24,10 @@ inside geometry or domain `g`. Optionally specify sampling
 algorithm `algo` and random number generator `rng`.
 """
 Base.rand(rng::Random.AbstractRNG, p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
-  [rand_single(rng, p, g, algo) for i in 1:n]
+  [randsingle(rng, p, g, algo) for i in 1:n]
 
 Base.rand(rng::Random.AbstractRNG, p::PointProcess, g; algo=default_sampling_algorithm(p, g)) =
-  rand_single(rng, p, g, algo)
+  randsingle(rng, p, g, algo)
 
 Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
   rand(Random.GLOBAL_RNG, p, g, n; algo=algo)
@@ -35,12 +35,12 @@ Base.rand(p::PointProcess, g, n::Int; algo=default_sampling_algorithm(p, g)) =
 Base.rand(p::PointProcess, g; algo=default_sampling_algorithm(p, g)) = rand(Random.GLOBAL_RNG, p, g; algo=algo)
 
 """
-    rand_single(rng, p, g, algo)
+    randsingle(rng, p, g, algo)
 
 Generate a single realization of spatial point process
 `p` inside geometry or domain `g` with sampling `algo`.
 """
-function rand_single end
+function randsingle end
 
 """
     default_sampling_algorithm(p, g)

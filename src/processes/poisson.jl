@@ -35,7 +35,7 @@ end
 # HOMOGENEOUS CASE
 #------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::ConstantIntensity)
+function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::ConstantIntensity)
   # simulate number of points
   λ = p.λ
   V = measure(g)
@@ -49,18 +49,18 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::LewisShedler)
+function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::LewisShedler)
   # simulate a homogeneous process
-  pp = rand_single(rng, PoissonProcess(algo.λmax), g, ConstantIntensity())
+  pp = randsingle(rng, PoissonProcess(algo.λmax), g, ConstantIntensity())
 
   # thin point pattern
   isnothing(pp) ? nothing : PointSet(collect(thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))))
 end
 
-rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::ConstantIntensity) =
-  rand_single(rng, PoissonProcess(p.λ.(centroid.(d))), d, algo)
+randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::ConstantIntensity) =
+  randsingle(rng, PoissonProcess(p.λ.(centroid.(d))), d, algo)
 
-function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::ConstantIntensity)
+function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::ConstantIntensity)
   # simulate number of points
   λ = p.λ
   V = measure.(d)

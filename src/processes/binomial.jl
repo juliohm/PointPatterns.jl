@@ -15,5 +15,5 @@ ishomogeneous(p::BinomialProcess) = true
 
 default_sampling_algorithm(::BinomialProcess, ::Any) = ConstantIntensity()
 
-rand_single(rng::Random.AbstractRNG, p::BinomialProcess, g, ::ConstantIntensity) =
+randsingle(rng::Random.AbstractRNG, p::BinomialProcess, g, ::ConstantIntensity) =
   PointSet(sample(rng, g, HomogeneousSampling(p.n)))

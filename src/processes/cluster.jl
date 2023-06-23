@@ -31,7 +31,7 @@ ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) =
 
 default_sampling_algorithm(::ClusterProcess, ::Any) = nothing
 
-function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
+function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
   # retrieve parameters
   Dim = embeddim(g)
   T = coordtype(g)

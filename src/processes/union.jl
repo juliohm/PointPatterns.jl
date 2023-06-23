@@ -16,7 +16,7 @@ ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 
 default_sampling_algorithm(::UnionProcess, ::Any) = nothing
 
-function rand_single(rng::Random.AbstractRNG, p::UnionProcess, g, ::Nothing)
+function randsingle(rng::Random.AbstractRNG, p::UnionProcess, g, ::Nothing)
   pp₁ = rand(rng, p.p₁, g)
   pp₂ = rand(rng, p.p₂, g)
   PointSet([collect(pp₁); collect(pp₂)])
