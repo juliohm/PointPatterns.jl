@@ -33,13 +33,13 @@ function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, algo::PointP
   parents = rand_single(rng, p.p, g, algo)
 
   # generate offsprings
-  offsprings = [p.ofun(parent) for parent in parents]
+  offsprings = p.ofun.(parents)
 
   # combine offsprings into single set
-  points = mapreduce(vcat, offsprings) do pset
-    isnothing(pset) ? [] : collect(view(pset, g))
+  points = mapreduce(vcat, offsprings[offsprings.!=nothing]) do pset
+    collect(view(pset, g))
   end
 
-  PointSet{2,Float64}(points)
+  PointSet(points)
 end
 
