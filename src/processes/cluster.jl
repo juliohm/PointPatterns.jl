@@ -8,6 +8,11 @@
 A cluster process with parent process `p` and offsprings generated
 with `ofun`. It is a function that take a parent point and generates
 a set of offspring points as a PointSet.
+
+## Examples
+
+```julia
+# TODO
 """
 struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
   p::P
