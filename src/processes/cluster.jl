@@ -18,17 +18,14 @@ function ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function)
   ClusterProcess(p, parent -> rand(o, gfun(parent)))
 end
 
-function ClusterProcess(p::PointProcess, o::PoissonProcess{<:Function}, gfun::Function; centered = true)
-  if centered
-    ClusterProcess(p, parent -> rand(PoissonProcess(x -> o.λ(Point(x - parent))), gfun(parent)))
-  else
-    ClusterProcess(p, parent -> rand(o, gfun(parent)))
-  end
-end
 
 default_sampling_algorithm(p::ClusterProcess, g) = default_sampling_algorithm(p.p, g)
 
 function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, algo::PointPatternAlgo)
+  # retrieve basic parameters
+  Dim = embeddim(g)
+  T = coordtype(g)
+
   # generate parents
   parents = rand_single(rng, p.p, g, algo)
 
@@ -36,8 +33,8 @@ function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, algo::PointP
   offsprings = p.ofun.(parents)
 
   # combine offsprings into single set
-  points = mapreduce(vcat, offsprings[offsprings.!=nothing]) do pset
-    collect(view(pset, g))
+  points = mapreduce(vcat, offsprings) do pset
+    isnothing(pset) ? Point{Dim,T}[] : collect(view(pset, g))
   end
 
   PointSet(points)
