@@ -14,9 +14,8 @@ struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
   ofun::F
 end
 
-function ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function)
+ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) =
   ClusterProcess(p, parent -> rand(o, gfun(parent)))
-end
 
 
 default_sampling_algorithm(p::ClusterProcess, g) = default_sampling_algorithm(p.p, g)
