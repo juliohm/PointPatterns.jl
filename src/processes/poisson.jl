@@ -23,12 +23,12 @@ ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
 defaultalgo(::PoissonProcess, ::Any) = ConstantIntensity()
 
-defaultalgo(p::PoissonProcess{<:Function}, g) = LewisShedler(default_lambda_max(p, g))
+defaultalgo(p::PoissonProcess{<:Function}, g) = LewisShedler(maxintensity(p, g))
 
-function default_lambda_max(p::PoissonProcess{<:Function}, g)
+function maxintensity(p::PoissonProcess{<:Function}, g)
   points = sample(g, HomogeneousSampling(10000))
-  λvec = p.λ.(points)
-  maximum(λvec) + 0.05 * (maximum(λvec) - minimum(λvec))
+  λmin, λmax = extrema(p.λ, points)
+  λmax + 0.05 * (λmax - λmin)
 end
 
 #------------------
