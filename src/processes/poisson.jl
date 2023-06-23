@@ -53,7 +53,7 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::Co
   n = rand(rng, Poisson(λ * V))
 
   # simulate n points
-  iszero(n) ? nothing : PointSet(sample(g, HomogeneousSampling(n)))
+  iszero(n) ? nothing : PointSet(sample(rng, g, HomogeneousSampling(n)))
 end
 
 #--------------------
