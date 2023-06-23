@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------
 
 """
-   PoissonProcess(λ)
+    PoissonProcess(λ)
 
 A Poisson process with intensity `λ`. For a homogeneous process,
 define `λ` as a constant real value, while for an inhomogeneous process,
