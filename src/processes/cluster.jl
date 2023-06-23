@@ -26,15 +26,14 @@ function ClusterProcess(p::PointProcess, o::PoissonProcess{<:Function}, gfun::Fu
   end
 end
 
-default_sampling_algorithm(::ClusterProcess, ::Any) = ConstantIntensity()
+default_sampling_algorithm(p::ClusterProcess, g) = default_sampling_algorithm(p.p, g)
 
-function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, ::ConstantIntensity)
+function rand_single(rng::Random.AbstractRNG, p::ClusterProcess, g, algo::PointPatternAlgo)
   # generate parents
-  parents = rand(p.p, g)
+  parents = rand_single(rng, p.p, g, algo)
 
   # generate offsprings
   offsprings = [p.ofun(parent) for parent in parents]
-  # offsprings = [rand(p.o, p.d(parent)) for parent in parents]
 
   # combine offsprings into single set
   points = mapreduce(vcat, offsprings) do pset
