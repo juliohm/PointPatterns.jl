@@ -21,21 +21,11 @@ ishomogeneous(p::PoissonProcess{<:Function}) = false
 
 ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
-defaultalgo(::PoissonProcess, ::Any) = ConstantIntensity()
-
-defaultalgo(p::PoissonProcess{<:Function}, g) = LewisShedler(maxintensity(p, g))
-
-function maxintensity(p::PoissonProcess{<:Function}, g)
-  points = sample(g, HomogeneousSampling(10000))
-  λmin, λmax = extrema(p.λ, points)
-  λmax + 0.05 * (λmax - λmin)
-end
-
 #------------------
 # HOMOGENEOUS CASE
 #------------------
 
-function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g, ::ConstantIntensity)
+function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g)
   # simulate number of points
   λ = p.λ
   V = measure(g)
@@ -49,23 +39,31 @@ end
 # INHOMOGENEOUS CASE
 #--------------------
 
-function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g, algo::LewisShedler)
+function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g)
+  # upper bound for intensity
+  λmax = maxintensity(p, g)
+
   # simulate a homogeneous process
-  pp = randsingle(rng, PoissonProcess(algo.λmax), g, ConstantIntensity())
+  pset = randsingle(rng, PoissonProcess(λmax), g)
 
   # thin point pattern
-  isnothing(pp) ? nothing : PointSet(collect(thin(pp, RandomThinning(x -> p.λ(x) / algo.λmax))))
+  isnothing(pset) ? nothing : thin(pset, RandomThinning(x -> p.λ(x) / λmax))
 end
 
-randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain, algo::ConstantIntensity) =
-  randsingle(rng, PoissonProcess(p.λ.(centroid.(d))), d, algo)
+randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain) =
+  randsingle(rng, PoissonProcess(p.λ.(centroid.(d))), d)
 
-function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain, algo::ConstantIntensity)
+function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain)
   # simulate number of points
-  λ = p.λ
-  V = measure.(d)
-  n = rand(rng, Poisson(sum(λ .* V)))
+  λ = p.λ .* measure(d)
+  n = rand(rng, Poisson(sum(λ)))
 
-  # simulate n points
-  iszero(n) ? nothing : PointSet(sample(rng, d, HomogeneousSampling(n, λ .* V)))
+  # simulate point pattern
+  iszero(n) ? nothing : PointSet(sample(rng, d, HomogeneousSampling(n, λ)))
+end
+
+function maxintensity(p::PoissonProcess{<:Function}, g)
+  points = sample(g, HomogeneousSampling(10000))
+  λmin, λmax = extrema(p.λ, points)
+  λmax + 0.05 * (λmax - λmin)
 end
