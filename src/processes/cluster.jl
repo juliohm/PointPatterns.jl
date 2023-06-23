@@ -9,9 +9,9 @@ A cluster process with process `p` for parents and with process `o` for
 offsprings. The offspring domain for each parent point is computed by
 evaluating the function `d` over the parent point.
 """
-struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
-  p::P
-  o::P
+struct ClusterProcess{P1<:PointProcess,P2<:PointProcess,F<:Function} <: PointProcess
+  p::P1
+  o::P2
   d::F
 end
 
