@@ -19,7 +19,7 @@ export
   PointProcess,
   BinomialProcess,
   PoissonProcess,
-  PoissonClusterProcess,
+  ClusterProcess,
   UnionProcess,
   ishomogeneous,
 
