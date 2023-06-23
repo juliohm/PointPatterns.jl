@@ -22,10 +22,10 @@ function rand_single(rng::Random.AbstractRNG, p::PoissonClusterProcess, g, ::Con
   parents = rand(p.p, g)
 
   # generate offsprings
-  offspringvec = [rand(p.o, p.dₒ(parent)).geoms for parent in parents]
-  offspringall = PointSet(vcat(offspringvec...))
-  offspring = view(offspringall, g)
-  PointSet(collect(offspring))
+  offsprings = [rand(p.o, p.dₒ(parent)) for parent in parents]
+  points = mapreduce(vcat, offsprings) do pset
+    isnothing(pset) ? [] : collect(view(pset, g))
+  end
+  PointSet(points)
 end
-
 
