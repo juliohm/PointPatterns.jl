@@ -21,9 +21,9 @@ ishomogeneous(p::PoissonProcess{<:Function}) = false
 
 ishomogeneous(p::PoissonProcess{<:AbstractVector}) = false
 
-default_sampling_algorithm(::PoissonProcess, ::Any) = ConstantIntensity()
+defaultalgo(::PoissonProcess, ::Any) = ConstantIntensity()
 
-default_sampling_algorithm(p::PoissonProcess{<:Function}, g) = LewisShedler(default_lambda_max(p, g))
+defaultalgo(p::PoissonProcess{<:Function}, g) = LewisShedler(default_lambda_max(p, g))
 
 function default_lambda_max(p::PoissonProcess{<:Function}, g)
   points = sample(g, HomogeneousSampling(10000))

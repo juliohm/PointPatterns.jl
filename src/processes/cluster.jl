@@ -29,7 +29,7 @@ end
 ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) =
   ClusterProcess(p, parent -> rand(o, gfun(parent)))
 
-default_sampling_algorithm(::ClusterProcess, ::Any) = nothing
+defaultalgo(::ClusterProcess, ::Any) = nothing
 
 function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
   # retrieve parameters
