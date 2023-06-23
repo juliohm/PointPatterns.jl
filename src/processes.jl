@@ -85,6 +85,7 @@ struct ConstantIntensity <: PointPatternAlgo end
 
 include("processes/binomial.jl")
 include("processes/poisson.jl")
+include("processes/cluster.jl")
 
 # ----------------
 # UNION PROCESSES
