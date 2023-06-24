@@ -3,12 +3,12 @@
 # ------------------------------------------------------------------
 
 """
-    InhibitionProcess(r)
+    InhibitionProcess(δ)
 
-An inhibition point process with radius `r`.
+An inhibition point process with minimum distance `δ`.
 """
-struct InhibitionProcess{R<:Real} <: PointProcess
-  r::R
+struct InhibitionProcess{D<:Real} <: PointProcess
+  δ::D
 end
 
-randsingle(rng::Random.AbstractRNG, p::InhibitionProcess, g) = PointSet(sample(rng, g, MinDistanceSampling(p.r)))
+randsingle(rng::Random.AbstractRNG, p::InhibitionProcess, g) = PointSet(sample(rng, g, MinDistanceSampling(p.δ)))
