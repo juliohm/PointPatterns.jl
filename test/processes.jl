@@ -20,7 +20,8 @@
   binom = BinomialProcess(100)
   poisson1 = PoissonProcess(100.0)
   poisson2 = PoissonProcess(λ)
-  procs = [binom, poisson1, poisson2]
+  inhibit  = InhibitionProcess(0.1)
+  procs = [binom, poisson1, poisson2, inhibit]
 
   @testset "Basic" begin
     for p in procs, g in geoms
@@ -52,6 +53,12 @@
 
     pp = PointSet(rand(Point2, 10))
     @test isnothing(rand(PoissonProcess(100.0), pp))
+  end
+
+  @testset "Inhibition" begin
+  end
+
+  @testset "Cluster" begin
   end
 
   @testset "Union" begin

@@ -45,5 +45,6 @@ function randsingle end
 
 include("processes/binomial.jl")
 include("processes/poisson.jl")
+include("processes/inhibition.jl")
 include("processes/cluster.jl")
 include("processes/union.jl")
