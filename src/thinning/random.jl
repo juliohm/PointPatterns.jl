@@ -5,7 +5,7 @@
 """
     RandomThinning(p)
 
-Random thining with retention probability `p`, which can
+Random thinning with retention probability `p`, which can
 be a constant probability value in `[0,1]` or a function
 mapping a point to a probability.
 
