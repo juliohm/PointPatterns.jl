@@ -20,7 +20,7 @@
   binom = BinomialProcess(100)
   poisson1 = PoissonProcess(100.0)
   poisson2 = PoissonProcess(λ)
-  inhibit  = InhibitionProcess(0.1)
+  inhibit = InhibitionProcess(0.1)
   procs = [binom, poisson1, poisson2, inhibit]
 
   @testset "Basic" begin
@@ -55,11 +55,9 @@
     @test isnothing(rand(PoissonProcess(100.0), pp))
   end
 
-  @testset "Inhibition" begin
-  end
+  @testset "Inhibition" begin end
 
-  @testset "Cluster" begin
-  end
+  @testset "Cluster" begin end
 
   @testset "Union" begin
     b = Box((0.0, 0.0), (100.0, 100.0))
