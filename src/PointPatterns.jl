@@ -23,11 +23,6 @@ export
   UnionProcess,
   ishomogeneous,
 
-  # algorithms
-  PointPatternAlgo,
-  ConstantIntensity,
-  LewisShedler,
-
   # thinning methods
   ThinningMethod,
   RandomThinning,

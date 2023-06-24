@@ -13,7 +13,5 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-defaultalgo(::BinomialProcess, ::Any) = ConstantIntensity()
-
-randsingle(rng::Random.AbstractRNG, p::BinomialProcess, g, ::ConstantIntensity) =
+randsingle(rng::Random.AbstractRNG, p::BinomialProcess, g) =
   PointSet(sample(rng, g, HomogeneousSampling(p.n)))

@@ -14,9 +14,7 @@ end
 
 ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 
-defaultalgo(::UnionProcess, ::Any) = nothing
-
-function randsingle(rng::Random.AbstractRNG, p::UnionProcess, g, ::Nothing)
+function randsingle(rng::Random.AbstractRNG, p::UnionProcess, g)
   pp₁ = rand(rng, p.p₁, g)
   pp₂ = rand(rng, p.p₂, g)
   PointSet([collect(pp₁); collect(pp₂)])

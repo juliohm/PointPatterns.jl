@@ -29,9 +29,7 @@ end
 ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) =
   ClusterProcess(p, parent -> rand(o, gfun(parent)))
 
-defaultalgo(::ClusterProcess, ::Any) = nothing
-
-function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
+function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g)
   # retrieve parameters
   Dim = embeddim(g)
   T = coordtype(g)
@@ -50,4 +48,3 @@ function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g, ::Nothing)
   # return point pattern
   PointSet(points)
 end
-
