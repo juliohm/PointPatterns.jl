@@ -57,7 +57,18 @@
 
   @testset "Inhibition" begin end
 
-  @testset "Cluster" begin end
+  @testset "Cluster" begin
+    offspring1 = parent -> rand(BinomialProcess(10), Ball(parent, 0.2))
+    offspring2 = parent -> rand(PoissonProcess(100), Ball(parent, 0.2))
+    offspring3 = parent -> rand(PoissonProcess(x -> 100 * sum((x - parent).^2)), Ball(parent, 0.5))
+    offspring4 = parent -> PointSet(sample(Sphere(parent, 0.1), RegularSampling(10)))
+    offspringfuns = [offspring1, offspring2, offspring3, offspring4]
+    for p in procs, ofun in offspringfuns, g in geoms
+      cp = ClusterProcess(p, ofun)
+      pp = rand(cp, g)
+      @test all(∈(g), pp)
+    end
+  end
 
   @testset "Union" begin
     b = Box((0.0, 0.0), (100.0, 100.0))
