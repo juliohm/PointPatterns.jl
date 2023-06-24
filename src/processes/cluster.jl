@@ -26,8 +26,7 @@ struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
   ofun::F
 end
 
-ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) =
-  ClusterProcess(p, parent -> rand(o, gfun(parent)))
+ClusterProcess(p::PointProcess, o::PointProcess, gfun::Function) = ClusterProcess(p, parent -> rand(o, gfun(parent)))
 
 function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g)
   # retrieve parameters
