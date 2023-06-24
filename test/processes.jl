@@ -40,8 +40,7 @@
   @testset "Poisson" begin
     # inhomogeneous with piecewise constant intensity
     for g in [grid, mesh]
-      λvec = λ.(centroid.(g))
-      p = PoissonProcess(λvec)
+      p = PoissonProcess(λ.(centroid.(g)))
       pp = rand(p, g)
       @test all(∈(g), pp)
     end
@@ -50,6 +49,7 @@
     for g in geoms
       @test isnothing(rand(PoissonProcess(0.0), seg))
     end
+
     pp = PointSet(rand(Point2, 10))
     @test isnothing(rand(PoissonProcess(100.0), pp))
   end
