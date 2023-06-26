@@ -47,15 +47,12 @@ function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g)
   pset = randsingle(rng, PoissonProcess(λmax), g)
 
   # thin point pattern
-  isnothing(pset) ? nothing : thin(pset, RandomThinning(x -> p.λ(x) / λmax))
+  isnothing(pset) ? nothing : PointSet(collect(thin(pset, RandomThinning(x -> p.λ(x) / λmax))))
 end
-
-randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, d::Domain) =
-  randsingle(rng, PoissonProcess(p.λ.(centroid.(d))), d)
 
 function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain)
   # simulate number of points
-  λ = p.λ .* measure(d)
+  λ = p.λ .* measure.(d)
   n = rand(rng, Poisson(sum(λ)))
 
   # simulate point pattern
