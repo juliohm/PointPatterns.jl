@@ -17,25 +17,38 @@ parent point and returns a geometry or domain for the offspring process.
 
 ## Examples
 
+Matern cluster process:
+
 ```julia
-# Matern cluster process
 p = ClusterProcess(
   PoissonProcess(1),
   PoissonProcess(1000),
   parent -> Ball(parent, 0.2)
 )
-# Inhomogenegeous parent process with fixed number of offsprings
+```
+
+Inhomogenegeous parent process with fixed number of offsprings:
+
+```julia
 p = ClusterProcess(
   PoissonProcess(s -> 1 * sum(coordinates(s) .^ 2)),
   BinomialProcess(100),
   parent -> Ball(parent, 0.2)
 )
-# Inhomogenegeous parent process and inhomogeneneous offspring process
+```
+
+Inhomogenegeous parent process and inhomogeneneous offspring process:
+
+```julia
 p = ClusterProcess(
   PoissonProcess(s -> 0.1 * sum(coordinates(s) .^ 2)),
   parent -> rand(PoissonProcess(x -> 5000 * sum((x - parent).^2)), Ball(parent, 0.5))
 )
-# Inhomogenegeous parent process and regularsampling
+```
+
+Inhomogenegeous parent process and regularsampling:
+
+```julia
 p = ClusterProcess(
   PoissonProcess(s -> 0.2 * sum(coordinates(s) .^ 2)),
   parent -> PointSet(sample(Sphere(parent, 0.1), RegularSampling(10)))
