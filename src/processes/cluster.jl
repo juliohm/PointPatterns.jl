@@ -18,58 +18,28 @@ parent point and returns a geometry or domain for the offspring process.
 ## Examples
 
 ```julia
-import CairoMakie
-using Meshes, MeshViz
-using PointPatterns
-
 # Matern cluster process
-d = Box((0,0), (5,5))
 p = ClusterProcess(
   PoissonProcess(1),
   PoissonProcess(1000),
   parent -> Ball(parent, 0.2)
 )
-ps = rand(p, d)
-
-fig = viz(d, alpha = 0.5; axis = (;title = "Matern cluster process"))
-viz!(ps, color = :black, pointsize = 5)
-
 # Inhomogenegeous parent process with fixed number of offsprings
-
-d = Box((-2.5,-2.5), (2.5,2.5))
 p = ClusterProcess(
   PoissonProcess(s -> 1 * sum(coordinates(s) .^ 2)),
   BinomialProcess(100),
   parent -> Ball(parent, 0.2)
 )
-ps = rand(p, d)
-
-fig = viz(d, alpha = 0.5; axis = (;title = "Inhomogeneneous with fixed number of offsprings"))
-viz!(ps, color = :black, pointsize = 5)
-
 # Inhomogenegeous parent process and inhomogeneneous offspring process
-
-d = Box((0,0), (5,5))
 p = ClusterProcess(
   PoissonProcess(s -> 0.1 * sum(coordinates(s) .^ 2)),
   parent -> rand(PoissonProcess(x -> 5000 * sum((x - parent).^2)), Ball(parent, 0.5))
 )
-ps = rand(p, d)
-
-fig = viz(d, alpha = 0.5; axis = (;title = "Inhomogenegeous parent and inhomogeneneous offspring"))
-viz!(ps, color = :black, pointsize = 5)
-
 # Inhomogenegeous parent process and regularsampling
-
-d = Box((0,0), (5,5))
 p = ClusterProcess(
   PoissonProcess(s -> 0.2 * sum(coordinates(s) .^ 2)),
   parent -> PointSet(sample(Sphere(parent, 0.1), RegularSampling(10)))
 )
-ps = rand(p, d)
-
-fig = viz(d, alpha = 0.5; axis = (;title = "Inhomogenegeous parent and regular sampling"))
-viz!(ps, color = :black, pointsize = 5)
 ```
 """
 struct ClusterProcess{P<:PointProcess,F<:Function} <: PointProcess
