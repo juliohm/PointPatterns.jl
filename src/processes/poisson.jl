@@ -47,7 +47,7 @@ function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Function}, g)
   pset = randsingle(rng, PoissonProcess(λmax), g)
 
   # thin point pattern
-  isnothing(pset) ? nothing : PointSet(collect(thin(pset, RandomThinning(x -> p.λ(x) / λmax))))
+  isnothing(pset) ? nothing : thin(pset, RandomThinning(x -> p.λ(x) / λmax))
 end
 
 function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}, d::Domain)

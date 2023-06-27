@@ -75,7 +75,7 @@ function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g)
 
   # combine offsprings into single set
   points = mapreduce(vcat, offsprings) do pset
-    isnothing(pset) ? Point{Dim,T}[] : collect(view(pset, g))
+    isnothing(pset) ? Point{Dim,T}[] : collect(pset ∩ g)
   end
 
   # return point pattern
