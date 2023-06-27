@@ -1,6 +1,5 @@
 using PointPatterns
 using Meshes
-using GeoStatsBase
 using Test, Random
 
 # list of tests
