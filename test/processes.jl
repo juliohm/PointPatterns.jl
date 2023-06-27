@@ -60,7 +60,7 @@
   @testset "Cluster" begin
     ofun1 = parent -> rand(BinomialProcess(10), Ball(parent, 0.2))
     ofun2 = parent -> rand(PoissonProcess(100), Ball(parent, 0.2))
-    ofun3 = parent -> rand(PoissonProcess(x -> 100 * sum((x - parent).^2)), Ball(parent, 0.5))
+    ofun3 = parent -> rand(PoissonProcess(x -> 100 * sum((x - parent) .^ 2)), Ball(parent, 0.5))
     ofun4 = parent -> PointSet(sample(Sphere(parent, 0.1), RegularSampling(10)))
     ofuns = [ofun1, ofun2, ofun3, ofun4]
     for p in procs, ofun in ofuns, g in geoms
