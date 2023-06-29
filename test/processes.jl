@@ -58,15 +58,28 @@
   @testset "Inhibition" begin end
 
   @testset "Cluster" begin
+    binom = BinomialProcess(100)
+    poisson = PoissonProcess(100.0)
+    procs = [binom, poisson]
+
     ofun1 = parent -> rand(BinomialProcess(10), Ball(parent, 0.2))
     ofun2 = parent -> rand(PoissonProcess(100), Ball(parent, 0.2))
     ofun3 = parent -> rand(PoissonProcess(x -> 100 * sum((x - parent).^2)), Ball(parent, 0.5))
     ofun4 = parent -> PointSet(sample(Sphere(parent, 0.1), RegularSampling(10)))
     ofuns = [ofun1, ofun2, ofun3, ofun4]
+
+    box = Box((0.0, 0.0), (4.0, 4.0))
+    ball = Ball((1.0, 1.0), 2.25)
+    tri = Triangle((0.0, 0.0), (5.65, 0.0), (5.65, 5.65))
+    grid = CartesianGrid((0, 0), (4, 4), dims=(10, 10))
+    geoms = [box, ball, tri, grid]
+
     for p in procs, ofun in ofuns, g in geoms
       cp = ClusterProcess(p, ofun)
       pp = rand(cp, g)
-      @test all(∈(g), pp)
+      if !isnothing(pp)
+        @test all(∈(g), pp)
+      end
     end
   end
 
