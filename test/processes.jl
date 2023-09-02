@@ -8,7 +8,7 @@
   outer = [(0, -4), (4, -1), (4, 1.5), (0, 3)]
   hole1 = [(0.2, -0.2), (1.4, -0.2), (1.4, 0.6), (0.2, 0.6)]
   hole2 = [(2, -0.2), (3, -0.2), (3, 0.4), (2, 0.4)]
-  poly = PolyArea(outer, [hole1, hole2])
+  poly = PolyArea([outer, hole1, hole2])
   grid = CartesianGrid((0, 0), (4, 4), dims=(10, 10))
   points = Point2[(0, 0), (4.5, 0), (0, 4.2), (4, 4.3), (1.5, 1.5)]
   connec = connect.([(1, 2, 5), (2, 4, 5), (4, 3, 5), (3, 1, 5)], Triangle)
