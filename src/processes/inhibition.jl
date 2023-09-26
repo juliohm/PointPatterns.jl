@@ -11,4 +11,4 @@ struct InhibitionProcess{D<:Real} <: PointProcess
   δ::D
 end
 
-randsingle(rng::Random.AbstractRNG, p::InhibitionProcess, g) = PointSet(sample(rng, g, MinDistanceSampling(p.δ)))
+randsingle(rng::Random.AbstractRNG, p::InhibitionProcess, g) = PointPattern(PointSet(sample(rng, g, MinDistanceSampling(p.δ))), g)

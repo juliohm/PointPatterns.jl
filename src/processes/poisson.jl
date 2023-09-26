@@ -32,7 +32,7 @@ function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:Real}, g)
   n = rand(rng, Poisson(λ * V))
 
   # simulate n points
-  iszero(n) ? nothing : PointSet(sample(rng, g, HomogeneousSampling(n)))
+  iszero(n) ? nothing : PointPattern(PointSet(sample(rng, g, HomogeneousSampling(n))), g)
 end
 
 #--------------------
@@ -56,7 +56,7 @@ function randsingle(rng::Random.AbstractRNG, p::PoissonProcess{<:AbstractVector}
   n = rand(rng, Poisson(sum(λ)))
 
   # simulate point pattern
-  iszero(n) ? nothing : PointSet(sample(rng, d, HomogeneousSampling(n, λ)))
+  iszero(n) ? nothing : PointPattern(PointSet(sample(rng, d, HomogeneousSampling(n, λ))), d)
 end
 
 function maxintensity(p::PoissonProcess{<:Function}, g)

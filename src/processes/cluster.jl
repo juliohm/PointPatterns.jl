@@ -31,11 +31,15 @@ function randsingle(rng::Random.AbstractRNG, p::ClusterProcess, g)
   parents = rand(rng, p.proc, g)
 
   # generate offsprings
-  offsprings = filter(!isnothing, p.ofun.(parents))
+  offsprings = filter(!isnothing, p.ofun.(parents.points))
 
   # intersect with geometry
-  intersects = filter(!isnothing, [o ∩ g for o in offsprings])
+  intersects = if eltype(offsprings) <: PointPattern # this is a temporary fix
+    filter(!isnothing, [o.points ∩ g for o in offsprings])
+  else
+    filter(!isnothing, [o ∩ g for o in offsprings])
+  end
 
   # combine offsprings into single set
-  isempty(intersects) ? nothing : PointSet(mapreduce(collect, vcat, intersects))
+  isempty(intersects) ? nothing : PointPattern(PointSet(mapreduce(collect, vcat, intersects)), g)
 end

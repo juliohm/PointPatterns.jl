@@ -13,4 +13,4 @@ end
 
 ishomogeneous(p::BinomialProcess) = true
 
-randsingle(rng::Random.AbstractRNG, p::BinomialProcess, g) = PointSet(sample(rng, g, HomogeneousSampling(p.n)))
+randsingle(rng::Random.AbstractRNG, p::BinomialProcess, g) = PointPattern(PointSet(sample(rng, g, HomogeneousSampling(p.n))), g)

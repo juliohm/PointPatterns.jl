@@ -26,7 +26,8 @@
   @testset "Basic" begin
     for p in procs, g in geoms
       pp = rand(p, g)
-      @test all(∈(g), pp)
+      @test g == pp.region
+      @test all(∈(g), pp.points)
     end
   end
 
@@ -43,7 +44,7 @@
     for g in [grid, mesh]
       p = PoissonProcess(λ.(centroid.(g)))
       pp = rand(p, g)
-      @test all(∈(g), pp)
+      @test all(∈(g), pp.points)
     end
 
     # empty pointsets
@@ -78,7 +79,7 @@
       cp = ClusterProcess(p, ofun)
       pp = rand(cp, g)
       if !isnothing(pp)
-        @test all(∈(g), pp)
+        @test all(∈(g), pp.points)
       end
     end
   end
@@ -91,8 +92,8 @@
 
     s = rand(p, b, 2)
     @test length(s) == 2
-    @test s[1] isa PointSet
-    @test s[2] isa PointSet
+    @test s[1] isa PointPattern
+    @test s[2] isa PointPattern
     @test nelements.(s) == [100, 100]
   end
 end

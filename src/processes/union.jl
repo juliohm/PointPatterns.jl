@@ -17,7 +17,7 @@ ishomogeneous(p::UnionProcess) = ishomogeneous(p.p₁) && ishomogeneous(p.p₂)
 function randsingle(rng::Random.AbstractRNG, p::UnionProcess, g)
   pp₁ = rand(rng, p.p₁, g)
   pp₂ = rand(rng, p.p₂, g)
-  PointSet([collect(pp₁); collect(pp₂)])
+  vcat(pp₁, pp₂) # note this is unmarked as PointProcess is not marked currently.
 end
 
 # ----------
