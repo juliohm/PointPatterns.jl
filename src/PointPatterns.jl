@@ -10,10 +10,14 @@ using Distributions
 
 import Random
 
+include("patterns.jl")
 include("processes.jl")
 include("thinning.jl")
 
 export
+  # patterns
+  PointPattern,
+
   # point processes
   PointProcess,
   BinomialProcess,
