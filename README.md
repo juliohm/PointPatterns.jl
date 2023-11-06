@@ -1,26 +1,8 @@
 # PointPatterns.jl
 
-[![][build-img]][build-url] [![][codecov-img]][codecov-url]
+THIS PACKAGE IS DEPRECATED
 
-Many tools have been developed in spatial statistics to
-extract useful information from (marked) point clouds.
-This package provides methods for spatial point pattern
-analysis and synthesis including summary statistics and
-sampling algorithms.
-
-## Installation
-
-Get the latest stable release with Julia's package manager:
-
-```julia
-] add PointPatterns
-```
-
-## Usage
-
-This package is part of the [GeoStats.jl](https://github.com/JuliaEarth/GeoStats.jl) framework.
-
-For examples of usage, please check the main documentation.
+All the functionality has been migrated to GeoStatsProcesses.jl
 
 ## Asking for help
 
