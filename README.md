@@ -2,7 +2,7 @@
 
 THIS PACKAGE IS DEPRECATED
 
-All the functionality has been migrated to GeoStatsProcesses.jl
+All the functionality has been migrated to [GeoStatsProcesses.jl](https://github.com/JuliaEarth/GeoStatsProcesses.jl)
 
 ## Asking for help
 
